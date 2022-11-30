@@ -1,0 +1,26 @@
+{
+  "name": "everything-sdk-js",
+  "version": "0.0.1",
+  "description": "javascript sdk for interacting with everything",
+  "scripts": {
+    "dev": "cd packages/app && PORT=3050 npm run dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/near-everything/everything-sdk-js.git"
+  },
+  "author": "@elliotBraem",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/near-everything/everything-sdk-js/issues"
+  },
+  "homepage": "https://github.com/near-everything/everything-sdk-js#readme",
+  "devDependencies": {
+    "eslint": "^8.28.0",
+    "lerna": "^6.1.0",
+    "prettier": "2.8.0"
+  },
+  "workspaces": [
+    "packages/*"
+  ]
+}
