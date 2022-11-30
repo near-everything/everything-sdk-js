@@ -1,7 +1,13 @@
-import '../styles/globals.css'
+import "swiper/css";
+import "swiper/css/effect-cards";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import "../styles/globals.css";
 
-function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />
+function App({ Component, pageProps }) {
+  const getLayout = Component.getLayout || ((page) => page);
+
+  return <>{getLayout(<Component {...pageProps} />)}</>;
 }
 
-export default MyApp
+export default App;
