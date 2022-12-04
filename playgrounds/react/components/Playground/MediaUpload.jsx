@@ -3,6 +3,7 @@ import React from "react";
 
 const MediaUpload = React.forwardRef(function MediaUpload(props, ref) {
   const { onUpload } = props;
+  // TODO: this could be replaced with dropzone
   return (
     <label
       className="flex flex-1 flex-col justify-center cursor-pointer w-full h-full hover:border-green-300"

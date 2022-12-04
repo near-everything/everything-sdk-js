@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { create } from "@everything-sdk-js/sdk";
+import { createThing } from "@everything-sdk-js/sdk";
 import Media from "./Media";
 
 function Form() {
@@ -20,7 +20,7 @@ function Form() {
     for (let i = 0; i < files.length; i++) {
       formData.append("files", files[i].data);
     }
-    await create(formData);
+    await createThing(formData);
   };
 
   return (

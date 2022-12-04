@@ -1,27 +1,26 @@
 import { testMessage } from "@everything-sdk-js/react";
 import Head from "next/head";
 import Link from "next/link";
-import styles from "../styles/Home.module.css";
 
 export default function Home() {
   return (
-    <div className={styles.container}>
+    <div >
       <Head>
         <title>everything sdk js</title>
         <meta name="description" content="example app for everything sdk js" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>{testMessage}</h1>
+      <main >
+        <h1 >{testMessage}</h1>
 
-        <p className={styles.description}>
+        <p >
           Get started by editing{" "}
-          <code className={styles.code}>pages/index.js</code>
+          <code >pages/index.js</code>
         </p>
 
-        <div className={styles.grid}>
-          <Link href="/playground" className={styles.card}>
+        <div >
+          <Link href="/playground" >
             <h2>Playground &rarr;</h2>
             <p>Customize your tempalte</p>
           </Link>
