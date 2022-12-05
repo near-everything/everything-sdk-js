@@ -4,7 +4,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import MediaUpload from "./MediaUpload";
 import MediaSlide from "./MediaSlide";
 
-function MediaReel({ images, setImages, allowUpload, allowRemove }) {
+function MediaReel({ images, setImages, allowRemove }) {
   const removeMedia = (index) => {
     setImages((old) => {
       return old.filter((value, i) => i !== index);

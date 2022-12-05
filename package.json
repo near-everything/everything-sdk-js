@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "description": "javascript sdk for interacting with everything",
   "scripts": {
-    "dev": "cd playgrounds/react && PORT=3050 npm run dev"
+    "dev": "cd playgrounds/react && PORT=3050 npm run dev",
+    "build": "lerna run build --sort"
   },
   "repository": {
     "type": "git",

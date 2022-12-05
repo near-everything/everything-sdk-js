@@ -22,3 +22,10 @@ export const EverythingProvider: React.FC<React.PropsWithChildren> = ({
 };
 
 export const useEverything = () => useContext(EverythingContext);
+
+
+// TODO: at init for the EverythingContext, pass the wallet and the account
+// Then useCreator can access both
+
+// OR we load it directly
+// I kind of want the blockchain to not matter. You can use whatever one you want, because I don't really see why not. 
