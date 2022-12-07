@@ -1,7 +1,9 @@
+import Link from "next/link";
+
 function Header() {
   return (
     <div className="navbar">
-      <a className="btn btn-ghost normal-case text-xl">everything</a>
+      <Link href="/" passHref><button className="btn btn-ghost normal-case text-xl">everything</button></Link>
     </div>
   );
 }
