@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { createThing } from "@everything-sdk-js/sdk";
+import { createThing, STORAGE_TYPE } from "@everything-sdk-js/sdk";
 import { useWallet } from "../../../../../mintbase-js/packages/react/lib";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import Media from "./Media";
@@ -11,21 +11,18 @@ function Form() {
 
   const characteristics = [
     {
-      attributeId: "1",
-      optionId: "2",
+      attributeId: 1,
+      optionId: 1,
     },
   ];
 
-  const OFFLINE = "OFFLINE";
-  const CLOUD = "CLOUD";
-  const BLOCKCHAIN = "BLOCKCHAIN";
 
   const handleSubmit = async () => {
     const wallet = await selector.wallet();
     const createThingData = {
       user,
       wallet,
-      storage: [OFFLINE, CLOUD, BLOCKCHAIN],
+      storage: [STORAGE_TYPE.PRIVATE, STORAGE_TYPE.CLOUD, STORAGE_TYPE.BLOCKCHAIN],
       characteristics,
       files
     }
