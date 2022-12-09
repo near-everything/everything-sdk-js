@@ -1,4 +1,3 @@
-import * as crypto from 'crypto';
 import { gql, GraphQLClient } from 'graphql-request';
 import { execute, mint, MintArgs } from "../../../../../mintbase-js/packages/sdk/src";
 import { STORAGE_TYPE } from "../constants";
@@ -27,6 +26,7 @@ function createOffline(thingId: string, args: any) {
 }
 
 async function createOnCloud(thingId: string, args: any) {
+  console.log("storing on cloud");
   try {
     const endpoint = '/api/graphql'; // TEMP, need to fix CORS
 
@@ -56,6 +56,7 @@ async function createOnCloud(thingId: string, args: any) {
 }
 
 async function createOnNEAR(thingId: string, args: any) {
+  console.log("storing on near");
   try {
     const mintArgs: MintArgs = { nftContractId: "everything.mintspace2.testnet", metadata: { reference: "hello" } } // TODO: reference thing id
     return await execute(

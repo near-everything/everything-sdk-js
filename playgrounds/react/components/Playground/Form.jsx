@@ -8,6 +8,7 @@ function Form() {
   const [files, setFiles] = useState([]);
   const { selector } = useWallet();
   const { user } = useUser();
+  const [thingId, setThingId] = useState("");
 
   const characteristics = [
     {
@@ -22,17 +23,24 @@ function Form() {
     const createThingData = {
       user,
       wallet,
-      storage: [STORAGE_TYPE.PRIVATE, STORAGE_TYPE.CLOUD, STORAGE_TYPE.BLOCKCHAIN],
+      storage: [
+        // STORAGE_TYPE.OFFLINE,
+        STORAGE_TYPE.CLOUD,
+        // STORAGE_TYPE.NEAR
+      ],
       characteristics,
       files
     }
-    await createThing(createThingData);
+    const id = await createThing(createThingData);
+    setThingId(id);
+
   };
 
   return (
       <div className="flex flex-col items-center w-full h-full">
         <Media files={files} setFiles={setFiles} />
         <br />
+        {thingId}
         <button className="btn w-32" onClick={handleSubmit}>
           submit
         </button>

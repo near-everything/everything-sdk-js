@@ -7,6 +7,10 @@ import "swiper/css/pagination";
 import "../styles/globals.css";
 import { WalletContextProvider } from "../../../../mintbase-js/packages/react/lib";
 
+if (process.env.NODE_ENV === 'development') {
+  require('../mocks')
+}
+
 function App({ Component, pageProps }) {
   const getLayout = Component.getLayout || ((page) => page);
 

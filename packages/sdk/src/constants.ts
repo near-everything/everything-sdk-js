@@ -1,6 +1,6 @@
 
 export const STORAGE_TYPE = {
-  OFFLINE: 'offline',
-  CLOUD: 'cloud',
-  NEAR: 'near'
+  OFFLINE: 'OFFLINE',
+  CLOUD: 'CLOUD',
+  NEAR: 'NEAR'
 }

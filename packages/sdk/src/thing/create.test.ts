@@ -4,6 +4,11 @@ import { GraphQLClient, gql } from 'graphql-request';
 import { execute, mint } from "../../../../../mintbase-js/packages/sdk/src";
 import * as crypto from 'crypto'
 
+Object.defineProperty(global, 'crypto', {
+  value: {
+    randomUUID: () => crypto.randomUUID()
+  }
+});
 jest.mock('graphql-request', () => {
   return {
     gql: jest.requireActual('graphql-request').gql,
