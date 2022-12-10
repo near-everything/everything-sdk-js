@@ -24,9 +24,9 @@ function Form() {
       user,
       wallet,
       storage: [
-        // STORAGE_TYPE.OFFLINE,
+        STORAGE_TYPE.OFFLINE,
         STORAGE_TYPE.CLOUD,
-        // STORAGE_TYPE.NEAR
+        STORAGE_TYPE.NEAR
       ],
       characteristics,
       files

@@ -73,7 +73,7 @@ describe('create thing on near', () => {
   const thingArgs = {
     user,
     wallet,
-    storage: [STORAGE_TYPE.NEAR],
+    storage: [STORAGE_TYPE.BLOCKCHAIN],
     characteristics
   };
   test("createThing should call execute with correct arguments", async () => {
