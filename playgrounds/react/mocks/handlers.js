@@ -13,6 +13,21 @@ export const handlers = [
       })
     );
   }),
+  graphql.query("thingById", (req, res, ctx) => {
+    return res(
+      ctx.data({
+        things: {
+          edges: [
+            {
+              node: {
+                id: 1,
+              },
+            },
+          ],
+        },
+      })
+    );
+  }),
   rest.post("http://localhost:4050/api/file/upload", (req, res, ctx) => {
     return res(
       ctx.status(401),

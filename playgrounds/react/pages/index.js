@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useWallet } from "../../../../mintbase-js/packages/react/lib";
 import Layout from "../components/Layout";
 import { useUser } from "@auth0/nextjs-auth0/client";
-import '@near-wallet-selector/modal-ui/styles.css';
+import "@near-wallet-selector/modal-ui/styles.css";
 
 export default function Home() {
   const {
@@ -20,9 +20,9 @@ export default function Home() {
 
   const signMessageTest = async () => {
     await signMessage({
-      message: 'hey',
+      message: "hey",
       callbackUrl: `${window.location.origin}/wallet-callback`,
-      meta: JSON.stringify({ type: 'signature' }),
+      meta: JSON.stringify({ type: "signature" }),
     });
   };
 
@@ -39,7 +39,13 @@ export default function Home() {
         <div className="flex flex-1">
           <Link href="/playground">
             <h2>Playground &rarr;</h2>
-            <p>Customize your tempalte</p>
+            <p>Customize your template</p>
+          </Link>
+        </div>
+        <div className="flex flex-1">
+          <Link href="/explore">
+            <h2>Explore &rarr;</h2>
+            <p>Fetch data</p>
           </Link>
         </div>
         <br />
@@ -53,7 +59,9 @@ export default function Home() {
           <div>
             {activeAccountId ? (
               <div className="">
-                <p className="text-white">You are logged in as {activeAccountId}</p>
+                <p className="text-white">
+                  You are logged in as {activeAccountId}
+                </p>
                 <button className="btn" onClick={disconnect}>
                   DISCONNECT
                 </button>
@@ -77,20 +85,24 @@ export default function Home() {
           </button>
         ) : null}
         <div className="flex justify-center">
-            {isLoading ? null : (
-              <>
-                {user ? (
-                  <a href="/api/auth/logout">
-                    <button className="btn normal-case">disconnect from everything</button>
-                  </a>
-                ) : (
-                  <a href="/api/auth/login">
-                    <button className="btn normal-case">connect to everything</button>
-                  </a>
-                )}
-              </>
-            )}
-          </div>
+          {isLoading ? null : (
+            <>
+              {user ? (
+                <a href="/api/auth/logout">
+                  <button className="btn normal-case">
+                    disconnect from everything
+                  </button>
+                </a>
+              ) : (
+                <a href="/api/auth/login">
+                  <button className="btn normal-case">
+                    connect to everything
+                  </button>
+                </a>
+              )}
+            </>
+          )}
+        </div>
       </main>
     </>
   );
@@ -99,4 +111,3 @@ export default function Home() {
 Home.getLayout = function getLayout(page) {
   return <Layout>{page}</Layout>;
 };
-
