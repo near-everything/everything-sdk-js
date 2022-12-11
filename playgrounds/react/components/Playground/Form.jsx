@@ -3,9 +3,11 @@ import { createThing, STORAGE_TYPE } from "@everything-sdk-js/sdk";
 import { useWallet } from "../../../../../mintbase-js/packages/react/lib";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import Media from "./Media";
+import Characteristics from "./Characteristics";
 
 function Form() {
   const [files, setFiles] = useState([]);
+  const [attributes, setAttributes] = useState([]);
   const { selector } = useWallet();
   const { user } = useUser();
   const [thingId, setThingId] = useState("");
@@ -33,17 +35,20 @@ function Form() {
     }
     const id = await createThing(createThingData);
     setThingId(id);
-
   };
 
   return (
       <div className="flex flex-col items-center w-full h-full">
         <Media files={files} setFiles={setFiles} />
         <br />
-        {thingId}
+        <Characteristics attributes={attributes} setAttributes={setAttributes} />
+        <br />
         <button className="btn w-32" onClick={handleSubmit}>
           submit
         </button>
+        <div className="flex w-1/2">
+          <p>response: {thingId}</p>
+        </div>
       </div>
   );
 }

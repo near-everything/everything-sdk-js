@@ -1,7 +1,7 @@
 import { gql } from 'graphql-request';
 
 export const thingByIdQuery = gql`
-  query thingById($thingId: Int!) {
+  query thingById($thingId: String!) {
     thing(id: $thingId) {
       id
       characteristics {
@@ -9,13 +9,6 @@ export const thingByIdQuery = gql`
           node {
             attributeId
             optionId
-          }
-        }
-      }
-      medias {
-        edges {
-          node {
-            mediaUrl
           }
         }
       }

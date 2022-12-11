@@ -24,7 +24,6 @@ export const fetchEverything = async <T, V = Record<string, unknown>>({
   try {
     const client = new GraphQLClient(GRAPHQL_ENDPOINT);
     return { data: await client.request<T>(query, variables) };
-
   } catch (error: any) {
     return {
       error: new GraphqlFetchingError(error.message),

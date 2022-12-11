@@ -1,14 +1,19 @@
-import { thingById } from "@everything-sdk-js/data";
+import { thingByIdQuery, fetchEverything } from "@everything-sdk-js/data";
 import { useQuery } from "@tanstack/react-query";
 import Head from "next/head";
 import Layout from "../../components/Layout";
 
 export default function Explore() {
   const { data, isLoading, isError, error } = useQuery(
-    ["thingById", 1],
+    ["thingById", "test"],
     async () => {
-      const { data } = await thingById(1);
-      return data;
+      const result = await fetchEverything({
+        query: thingByIdQuery,
+        variables: {
+          thingId: "test"
+        }
+      });
+      return result;
     }
   );
 

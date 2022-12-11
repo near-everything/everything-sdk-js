@@ -27,7 +27,5 @@ export const thingById = async (
     return { data, error };
   };
 
-  const res = await fetchData();
-
-  return { data: res.data, error: res.error };
+  return fetchData();
 };

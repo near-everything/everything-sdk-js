@@ -4,7 +4,8 @@
   "description": "javascript sdk for interacting with everything",
   "scripts": {
     "dev": "cd playgrounds/react && PORT=3050 npm run dev",
-    "build": "lerna run build --sort"
+    "build": "lerna run build --sort",
+    "mock:api": "graphql-faker ./faker-schema.graphql"
   },
   "repository": {
     "type": "git",
@@ -18,6 +19,7 @@
   "homepage": "https://github.com/near-everything/everything-sdk-js#readme",
   "devDependencies": {
     "eslint": "^8.28.0",
+    "graphql-faker": "^2.0.0-rc.25",
     "lerna": "^6.1.0",
     "prettier": "2.8.0"
   },
