@@ -1,13 +1,13 @@
-import { thingById } from './thingById';
-import { ThingByIdResults } from './thingById.types';
+import { thingsByOwner } from './thingsByOwner';
+import { ThingsByOwnerResults } from './thingsByOwner.types';
 
-import { thingByIdMock } from './thingById.mock';
+import { thingsByOwnerMock } from './thingsByOwner.mock';
 import { GraphQLClient } from 'graphql-request';
 import { GraphqlFetchingError } from '../../graphql/fetch';
 
 jest.mock('graphql-request');
 
-describe('thingById', () => {
+describe('thingsByOwner', () => {
   afterAll(() => {
     jest.resetAllMocks();
     jest.restoreAllMocks();
@@ -17,12 +17,12 @@ describe('thingById', () => {
     jest.clearAllMocks();
   });
 
-  it('should return thing by id data', async () => {
+  it('should return things by owner data', async () => {
     (GraphQLClient as jest.Mock).mockImplementationOnce(() => ({
-      request: (): Promise<ThingByIdResults> => Promise.resolve(thingByIdMock),
+      request: (): Promise<ThingsByOwnerResults> => Promise.resolve(thingsByOwnerMock),
     }));
 
-    const result = await thingById('1');
+    const result = await thingsByOwner('1');
 
     expect(result?.data?.things.edges[0].node.id).toBe(
       1
@@ -37,9 +37,9 @@ describe('thingById', () => {
     const errMessage = 'exploded';
     const exploded = new GraphqlFetchingError(errMessage);
     (GraphQLClient as jest.Mock).mockImplementationOnce(() => ({
-      request: (): Promise<ThingByIdResults> => Promise.reject(exploded),
+      request: (): Promise<ThingsByOwnerResults> => Promise.reject(exploded),
     }));
-    await expect(thingById('123')).rejects.toThrow(
+    await expect(thingsByOwner('123')).rejects.toThrow(
       exploded,
     );
   });
