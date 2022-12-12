@@ -4,19 +4,13 @@ import type { Wallet } from '@near-wallet-selector/core';
 import { STORAGE_TYPE } from "../constants";
 import { CreateThingArgs } from "./thing";
 import * as crypto from "crypto";
+import { fetchEverything, GraphqlFetchingError } from "../utils";
+import { createThingMutation } from "./create.mutation";
 
 interface CreateThingResponse {
   data?: any | null;
   error: undefined | GraphqlFetchingError;
 }
-
-export class GraphqlFetchingError extends Error {
-  constructor(msg: string) {
-    super();
-    this.message = msg;
-  }
-}
-
 
 export async function createThing(args: CreateThingArgs): Promise<CreateThingResponse> {
   // since we will be creating the thing across three possible storages,
@@ -55,17 +49,6 @@ export async function createThing(args: CreateThingArgs): Promise<CreateThingRes
 }
 
 async function createOnCloud(thingId: string, args: CreateThingArgs): Promise<{ data: any | null, error: undefined | GraphqlFetchingError }> {
-  console.log("storing on cloud");
-
-  const mutation = gql`
-    mutation createThing($input: CreateThingInput!) {
-      createThing(input: $input) {
-        thing {
-          id
-        }
-      }
-    }
-  `;
 
   const variables = {
     input: {
@@ -74,10 +57,9 @@ async function createOnCloud(thingId: string, args: CreateThingArgs): Promise<{ 
       characteristics: args.characteristics,
     },
   };
+  
   // make request to everything api
-
-
-  const { data, error } = await fetchEverything({ query: mutation, variables });
+  const { data, error } = await fetchEverything({ query: createThingMutation, variables });
   if (error) {
     console.error("Error creating thing", error.message);
   }
@@ -86,30 +68,18 @@ async function createOnCloud(thingId: string, args: CreateThingArgs): Promise<{ 
 }
 
 function createOnBlockchain(thingId: string, wallet: Wallet, args: MintArgs) {
-  console.log("storing on blockchain");
   try {
     // create a basic document on arweave to reference? Then the document can be updated like when adding images?
     // create a field that links to the thing id
     // allow use to enter in nftcontractId.
     const mintArgs = {
       nftContractId: args.nftContractId,
-      reference: "", // TODO: just be url to everything logo
-      ownerId: "everything.testnet" // this should be the account, how?
+      reference: args.reference, // TODO: just be url to everything logo
+      ownerId: args.ownerId // this should be the account, how?
       // How can I attach the thingId?
     };
     return execute(mint(mintArgs), { wallet });
-  } catch (e) {
-    console.log(e); // TODO: error handling
-  }
-}
-
-async function fetchEverything({ query, variables }: any) {
-  try {
-    const client = new GraphQLClient("/api/graphql");
-    return { data: await client.request(query, variables) };
-  } catch (error: any) {
-    return {
-      error: new GraphqlFetchingError(error.message),
-    };
+  } catch (error) {
+    console.error("Error minting thing", error); // TODO: error handling
   }
 }

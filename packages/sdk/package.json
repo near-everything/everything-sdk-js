@@ -29,7 +29,6 @@
     "typescript": "^4.9.3"
   },
   "dependencies": {
-    "@everything-sdk-js/data": "^0.0.1",
     "@near-wallet-selector/core": "^7.3.0"
   }
 }

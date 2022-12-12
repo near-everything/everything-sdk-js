@@ -1,20 +1,12 @@
+import { gql } from "graphql-request";
 import { STORAGE_TYPE } from "../constants";
 import { createThing } from "./create";
-import { GraphQLClient, gql } from 'graphql-request';
+import { fetchEverything } from "../utils";
 import { execute, mint } from "../../../../../mintbase-js/packages/sdk/src";
 import * as crypto from 'crypto'
+import { createThingMutation } from "./create.mutation";
 
-// Object.defineProperty(global, 'crypto', {
-//   value: {
-//     randomUUID: () => crypto.randomUUID()
-//   }
-// });
-jest.mock('graphql-request', () => {
-  return {
-    gql: jest.requireActual('graphql-request').gql,
-    GraphQLClient: jest.fn()
-  }
-});
+jest.mock('../utils');
 jest.mock('crypto');
 jest.mock('../../../../../mintbase-js/packages/sdk/src');
 
@@ -35,54 +27,89 @@ const characteristics = [
 ]
 
 describe('create thing on cloud', () => {
+
+  let mockRandomUUID: jest.SpyInstance;
+
+  afterEach(() => jest.resetAllMocks());
+
+  beforeEach(() => {
+    mockRandomUUID = jest.spyOn(crypto, 'randomUUID');
+    mockRandomUUID.mockImplementation(() => '123-daf');
+  });
+
+  beforeAll(() => {
+    jest.spyOn(global.console, 'error').mockImplementation(() => null);
+  });
+
   const thingArgs = {
     user,
     wallet,
     storage: [STORAGE_TYPE.CLOUD],
     characteristics
   };
+
   test("createThing should call the everything api with correct arguments", async () => {
-    const mockRandomUUID = jest.spyOn(crypto, 'randomUUID');
-    mockRandomUUID.mockImplementation(() => 'mock-uuid');
-    const mockRequest = jest.fn();
-    (GraphQLClient as jest.Mock).mockImplementation(() => {
+    (fetchEverything as jest.Mock).mockImplementation(() => {
       return {
-        request: mockRequest
+        data: { createThing: { thing: { id: "123-daf" } } }
       }
     });
-    // (request as jest.Mock).mockImplementationOnce(() => (
-    //   () => Promise.resolve({ foo: 'bar' })
-    // ))
     const data = await createThing(thingArgs);
     expect(mockRandomUUID).toHaveBeenCalled();
-    expect(mockRequest).toHaveBeenCalledWith(gql`
-      mutation createThing($input: CreateThingInput!) {
-        createThing(input: $input) {
-          thing {
-            id
-          }
-        }
+    expect(fetchEverything).toHaveBeenCalledWith({
+      query: createThingMutation,
+      variables: { input: { thingId: "123-daf", ownerId: user.sub, characteristics } }
+    });
+    expect(data).toEqual({ data: { thingId: "123-daf" }, error: undefined })
+  });
+
+  test("createThing should return error if cloud returns error", async () => {
+    (fetchEverything as jest.Mock).mockImplementation(() => {
+      return {
+        error: { message: "ohhh nooo" }
       }
-    `,
-      { input: { ownerId: user.sub, characteristics } });
+    });
+    const data = await createThing(thingArgs);
+    expect(mockRandomUUID).toHaveBeenCalled();
+    expect(fetchEverything).toHaveBeenCalledWith({
+      query: createThingMutation,
+      variables: { input: { thingId: "123-daf", ownerId: user.sub, characteristics } }
+    });
+    expect(data).toEqual({ data: undefined, error: { message: "ohhh nooo" } })
   });
 });
 
 
 describe('create thing on near', () => {
+
+  let mockRandomUUID: jest.SpyInstance;
+
+  afterEach(() => jest.resetAllMocks());
+
+  beforeAll(() => {
+    mockRandomUUID = jest.spyOn(crypto, 'randomUUID');
+    mockRandomUUID.mockImplementation(() => '123-daf');
+  });
+
   const thingArgs = {
     user,
     wallet,
     storage: [STORAGE_TYPE.BLOCKCHAIN],
-    characteristics
+    characteristics,
+    mintArgs: { nftContractId: "sample.testnet", reference: "https://everything.dev", ownerId: "everything.testnet" }
   };
+
   test("createThing should call execute with correct arguments", async () => {
     (mint as jest.Mock).mockImplementationOnce(() => (
       "mock mint"
-    ))
+    ));
+    (execute as jest.Mock).mockImplementationOnce(() => (
+      { receipts_outcome: "receipt123" }
+    ));
     const data = await createThing(thingArgs);
-    expect(mint).toHaveBeenCalledWith({ nftContractId: "everything.mintspace2.testnet", metadata: { reference: "hello" } });
+    expect(mockRandomUUID).toHaveBeenCalled();
+    expect(mint).toHaveBeenCalledWith({ nftContractId: "sample.testnet", reference: "https://everything.dev", ownerId: "everything.testnet" });
     expect(execute).toHaveBeenCalledWith("mock mint", { wallet });
+    expect(data).toEqual({ data: { receiptId: "receipt123" }, error: undefined })
   });
 });
-

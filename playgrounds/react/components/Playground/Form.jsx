@@ -41,7 +41,7 @@ function Form() {
     const createThingData = {
       user,
       wallet,
-      mintArgs: { nftContractId: "everything.mintspace2.testnet" },
+      mintArgs: { nftContractId: "everything.mintspace2.testnet", reference: "", ownerId: "everything.testnet" },
       storage,
       characteristics,
       files,
