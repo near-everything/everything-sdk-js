@@ -1,9 +1,10 @@
 import { useUser } from "@auth0/nextjs-auth0/client";
-import { STORAGE_TYPE } from "@everything-sdk-js/sdk";
+import { createThing, STORAGE_TYPE } from "@everything-sdk-js/sdk";
 import { useState } from "react";
 import { useWallet } from "../../../../../mintbase-js/packages/react/lib";
 import Characteristics from "./Characteristics";
 import Media from "./Media";
+import StorageCheckbox from "./StorageCheckbox";
 
 function Form() {
   const [files, setFiles] = useState([]);
@@ -11,7 +12,8 @@ function Form() {
   const { selector } = useWallet();
   const { user } = useUser();
   const [thingId, setThingId] = useState("");
-  const [cloud, setCloud] = useState(false);
+  const [offline, setOffline] = useState(false);
+  const [cloud, setCloud] = useState(true);
   const [blockchain, setBlockchain] = useState(false);
 
   const handleSubmit = async () => {
@@ -27,6 +29,9 @@ function Form() {
         };
       });
     const storage = [];
+    if (offline) {
+      storage.push(STORAGE_TYPE.OFFLINE);
+    }
     if (cloud) {
       storage.push(STORAGE_TYPE.CLOUD);
     }
@@ -36,13 +41,15 @@ function Form() {
     const createThingData = {
       user,
       wallet,
+      mintArgs: { nftContractId: "everything.mintspace2.testnet" },
       storage,
       characteristics,
       files,
     };
     console.log(createThingData);
-    // const id = await createThing(createThingData);
-    // setThingId(id);
+    const { data, error } = await createThing(createThingData);
+    console.log(JSON.stringify(data));
+    console.log(JSON.stringify(error));
   };
 
   return (
@@ -53,28 +60,23 @@ function Form() {
       <br />
       <div className="flex flex-col w-1/2">
         <p>storage</p>
-        <div className="form-control">
-          <label className="label cursor-pointer">
-            <span className="label-text">cloud</span>
-            <input
-              type="checkbox"
-              checked={cloud}
-              className="checkbox"
-              onChange={() => setCloud(!cloud)}
-            />
-          </label>
-        </div>
-        <div className="form-control">
-          <label className="label cursor-pointer">
-            <span className="label-text">blockchain</span>
-            <input
-              type="checkbox"
-              checked={blockchain}
-              className="checkbox"
-              onChange={() => setBlockchain(!blockchain)}
-            />
-          </label>
-        </div>
+        <StorageCheckbox
+          name={"offline"}
+          disabled
+          checked={offline}
+          setChecked={() => setOffline(!offline)}
+        />
+        <StorageCheckbox
+          name={"cloud"}
+          disabled
+          checked={cloud}
+          setChecked={() => setCloud(!cloud)}
+        />
+        <StorageCheckbox
+          name={"blockchain"}
+          checked={blockchain}
+          setChecked={() => setBlockchain(!blockchain)}
+        />
       </div>
       <br />
       <button className="btn w-32" onClick={handleSubmit}>
