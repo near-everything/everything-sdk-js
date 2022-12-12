@@ -2,15 +2,10 @@ import { gql, GraphQLClient } from "graphql-request";
 import { execute, mint, MintArgs } from "../../../../../mintbase-js/packages/sdk/src";
 import type { Wallet } from '@near-wallet-selector/core';
 import { STORAGE_TYPE } from "../constants";
-import { CreateThingArgs } from "./thing";
+import { CreateThingArgs, CreateThingResponse } from "./thing";
 import * as crypto from "crypto";
 import { fetchEverything, GraphqlFetchingError } from "../utils";
 import { createThingMutation } from "./create.mutation";
-
-interface CreateThingResponse {
-  data?: any | null;
-  error: undefined | GraphqlFetchingError;
-}
 
 export async function createThing(args: CreateThingArgs): Promise<CreateThingResponse> {
   // since we will be creating the thing across three possible storages,
@@ -28,14 +23,7 @@ export async function createThing(args: CreateThingArgs): Promise<CreateThingRes
     // store thing data on cloud
     const { data, error } = await createOnCloud(thingId, args);
 
-    if (error) {
-      // error, load response and do not continue
-      response.error = error;
-      return response;
-    } else {
-      // load id into response data
-      response.data = { thingId: data.createThing.thing.id };
-    }
+    
   }
 
   if (args.storage.includes(STORAGE_TYPE.BLOCKCHAIN)) {
