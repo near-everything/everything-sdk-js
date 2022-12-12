@@ -2,10 +2,6 @@
 
 <!-- PROJECT SHIELDS -->
 
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
 
 <!-- PROJECT LOGO -->
@@ -43,20 +39,12 @@
 
 ## license
 
-distributed under the MIT License. see `LICENSE.txt` for more information.
+distributed under the MIT License. see `LICENSE` for more information.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
-[contributors-shield]: https://img.shields.io/github/contributors/near-everything/everything-sdk-js.svg?style=for-the-badge
-[contributors-url]: https://github.com/near-everything/everything-sdk-js/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/near-everything/everything-sdk-js.svg?style=for-the-badge
-[forks-url]: https://github.com/near-everything/everything-sdk-js/network/members
-[stars-shield]: https://img.shields.io/github/stars/near-everything/everything-sdk-js.svg?style=for-the-badge
-[stars-url]: https://github.com/near-everything/everything-sdk-js/stargazers
-[issues-shield]: https://img.shields.io/github/issues/near-everything/everything-sdk-js.svg?style=for-the-badge
-[issues-url]: https://github.com/near-everything/everything-sdk-js/issues
 [license-shield]: https://img.shields.io/github/license/near-everything/everything-sdk-js.svg?style=for-the-badge
-[license-url]: https://github.com/near-everything/everything-sdk-js/blob/main/LICENSE.txt
+[license-url]: https://github.com/near-everything/everything-sdk-js/blob/main/LICENSE
