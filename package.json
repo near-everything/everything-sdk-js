@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "cd playgrounds/react && PORT=3050 npm run dev",
     "build": "lerna run build --sort",
+    "test": "lerna run test --stream",
     "mock:api": "graphql-faker ./faker-schema.graphql"
   },
   "repository": {

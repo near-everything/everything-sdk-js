@@ -1,7 +1,7 @@
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { createThing, STORAGE_TYPE } from "@everything-sdk-js/sdk";
 import { useState } from "react";
-import { useWallet } from "../../../../../mintbase-js/packages/react/lib";
+import { useWallet } from "@mintbase-js/react";
 import Characteristics from "./Characteristics";
 import Media from "./Media";
 import StorageCheckbox from "./StorageCheckbox";
@@ -12,9 +12,11 @@ function Form() {
   const { selector } = useWallet();
   const { user } = useUser();
   const [thingId, setThingId] = useState("");
+  const [receiptId, setReceiptId] = useState("");
   const [offline, setOffline] = useState(false);
   const [cloud, setCloud] = useState(true);
   const [blockchain, setBlockchain] = useState(false);
+  const [arweave, setArweave] = useState(false);
 
   const handleSubmit = async () => {
     const wallet = await selector.wallet();
@@ -41,7 +43,17 @@ function Form() {
     const createThingData = {
       user,
       wallet,
-      mintArgs: { nftContractId: "everything.mintspace2.testnet", reference: "", ownerId: "everything.testnet" },
+      mintArgs: {
+        network: "testnet",
+        nftContractId: "everything.mintspace2.testnet",
+        metadata: {
+          reference: "",
+        },
+        options: {
+          ownerId: "everything.testnet",
+          metadataId: "test",
+        },
+      },
       storage,
       characteristics,
       files,
@@ -49,6 +61,10 @@ function Form() {
     console.log(createThingData);
     const { data, error } = await createThing(createThingData);
     console.log(JSON.stringify(data));
+    if (data) {
+      setThingId(data.thingId);
+      setReceiptId(data.receiptId);
+    }
     console.log(JSON.stringify(error));
   };
 
@@ -56,34 +72,56 @@ function Form() {
     <div className="flex flex-col items-center w-full h-full">
       <Media files={files} setFiles={setFiles} />
       <br />
-      <Characteristics attributes={attributes} setAttributes={setAttributes} />
-      <br />
       <div className="flex flex-col w-1/2">
-        <p>storage</p>
-        <StorageCheckbox
-          name={"offline"}
-          disabled
-          checked={offline}
-          setChecked={() => setOffline(!offline)}
+        <Characteristics
+          attributes={attributes}
+          setAttributes={setAttributes}
         />
-        <StorageCheckbox
-          name={"cloud"}
-          disabled
-          checked={cloud}
-          setChecked={() => setCloud(!cloud)}
-        />
-        <StorageCheckbox
-          name={"blockchain"}
-          checked={blockchain}
-          setChecked={() => setBlockchain(!blockchain)}
-        />
+        <br />
+        <div>
+          <p>thing data storage</p>
+          <StorageCheckbox
+            name={"offline"}
+            disabled
+            checked={offline}
+            setChecked={() => setOffline(!offline)}
+          />
+          <StorageCheckbox
+            name={"cloud"}
+            disabled
+            checked={cloud}
+            setChecked={() => setCloud(!cloud)}
+          />
+        </div>
+        <br />
+        <span className="flex justify-between">
+          <p>mint reference on chain?</p>
+          <input
+            type="checkbox"
+            className="toggle toggle-success"
+            checked={blockchain}
+            onChange={() => setBlockchain(!blockchain)}
+          />
+        </span>
+        <br />
+        <span className="flex justify-between">
+          <p>store media on chain?</p>
+          <input
+            type="checkbox"
+            className="toggle toggle-success"
+            checked={arweave}
+            onChange={() => setArweave(!arweave)}
+          />
+        </span>
       </div>
       <br />
       <button className="btn w-32" onClick={handleSubmit}>
         submit
       </button>
-      <div className="flex w-1/2">
-        <p>response: {thingId}</p>
+      <div className="flex w-1/2 h-64">
+        <p>response:</p>
+        <p>{thingId}</p>
+        <p>{receiptId}</p>
       </div>
     </div>
   );

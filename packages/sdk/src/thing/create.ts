@@ -1,73 +1,112 @@
-import { gql, GraphQLClient } from "graphql-request";
-import { execute, mint, MintArgs } from "../../../../../mintbase-js/packages/sdk/src";
-import type { Wallet } from '@near-wallet-selector/core';
-import { STORAGE_TYPE } from "../constants";
-import { CreateThingArgs, CreateThingResponse } from "./thing";
-import * as crypto from "crypto";
+import { execute } from "@mintbase-js/sdk";
+import { AccountId, mint, MintArgs } from "@mintbase-js/sdk/lib/v1";
+import type { FinalExecutionOutcome, Wallet } from '@near-wallet-selector/core';
+import { isUuid, uuid } from 'uuidv4';
+import { MINT_ARGS_NOT_PROVIDED, NOT_VALID_UUID, STORAGE_TYPE, USER_NOT_PROVIDED, WALLET_NOT_PROVIDED } from "../constants";
 import { fetchEverything, GraphqlFetchingError } from "../utils";
 import { createThingMutation } from "./create.mutation";
 
-export async function createThing(args: CreateThingArgs): Promise<CreateThingResponse> {
-  // since we will be creating the thing across three possible storages,
-  // generate the unique id now. Any better uuid methods for browser? https://medium.com/teads-engineering/generating-uuids-at-scale-on-the-web-2877f529d2a2
-  const thingId = crypto.randomUUID();
+type CreateThingResults = {
+  data: any | null,
+  error: undefined | GraphqlFetchingError
+}
 
-  const response: CreateThingResponse = {
-    data: undefined,
-    error: undefined,
-  };
-  // TODO: option to store offline rather than cloud
-  // if (args.storage.includes(STORAGE_TYPE.OFFLINE)) { }
+type CreateThingResponse = {
+
+}
+
+export type CreateThingArgs = {
+  storage: string[],
+  user?: any, // this will come from Auth0, used to get access token
+  characteristics?: Characteristic[],
+  files?: File[],
+  wallet?: any,
+  ownerId?: AccountId,
+  nftContractId?: AccountId
+};
+
+export type CreateThingCloudArgs = {
+  user: any, // this will come from Auth0, used to get access token
+  characteristics?: Characteristic[]
+};
+
+export type CreateThingBlockchainArgs = {
+  wallet: any,
+  ownerId: AccountId,
+  nftContractId: AccountId
+}
+
+export async function createThing(args: CreateThingArgs) {
+  const thingId = uuid();
 
   if (args.storage.includes(STORAGE_TYPE.CLOUD)) {
-    // store thing data on cloud
-    const { data, error } = await createOnCloud(thingId, args);
-
-    
+    // confirm user
+    if (!args.user) {
+      throw new Error(USER_NOT_PROVIDED);
+    }
+    const cloudArgs: CreateThingCloudArgs = {
+      user: args.user,
+      characteristics: args.characteristics
+    }
+    const { data: data, error } = await createThingOnCloud(thingId, cloudArgs);
   }
 
   if (args.storage.includes(STORAGE_TYPE.BLOCKCHAIN)) {
-    // create a reference on blockchain
-    const result = await createOnBlockchain(thingId, args.wallet, args.mintArgs!); // TODO: is there any error result?
-    // load receipt id into response data
-    response.data = { ...response.data, receiptId: result?.receipts_outcome };
+    // insert thingId into mintArgs
+    if (!args.ownerId || !args.nftContractId) {
+      throw new Error(MINT_ARGS_NOT_PROVIDED);
+    }
+    if (!args.wallet) {
+      // throw error
+      throw new Error(WALLET_NOT_PROVIDED);
+    }
+    const blockchainArgs: CreateThingBlockchainArgs = {
+      wallet: args.wallet,
+      ownerId: args.ownerId,
+      nftContractId: args.nftContractId
+    }
+    const response = await createThingOnBlockchain(thingId, blockchainArgs)
   }
-
-  return response;
 }
 
-async function createOnCloud(thingId: string, args: CreateThingArgs): Promise<{ data: any | null, error: undefined | GraphqlFetchingError }> {
+export async function createThingOnCloud(thingId: string, args: CreateThingCloudArgs): Promise<CreateThingResults> { // TODO: replace with own type
+  if (!isUuid(thingId)) {
+    throw new Error(NOT_VALID_UUID);
+  }
 
   const variables = {
     input: {
       thingId: thingId,
-      ownerId: args.user?.sub,
+      ownerId: args.user.sub,
       characteristics: args.characteristics,
     },
   };
-  
-  // make request to everything api
   const { data, error } = await fetchEverything({ query: createThingMutation, variables });
   if (error) {
     console.error("Error creating thing", error.message);
+    // Do anything?
   }
-
   return { data, error };
 }
 
-function createOnBlockchain(thingId: string, wallet: Wallet, args: MintArgs) {
-  try {
-    // create a basic document on arweave to reference? Then the document can be updated like when adding images?
-    // create a field that links to the thing id
-    // allow use to enter in nftcontractId.
-    const mintArgs = {
-      nftContractId: args.nftContractId,
-      reference: args.reference, // TODO: just be url to everything logo
-      ownerId: args.ownerId // this should be the account, how?
-      // How can I attach the thingId?
-    };
-    return execute(mint(mintArgs), { wallet });
-  } catch (error) {
-    console.error("Error minting thing", error); // TODO: error handling
+export async function createThingOnBlockchain(thingId: string, args: CreateThingBlockchainArgs): Promise<void | FinalExecutionOutcome> {
+  if (!isUuid(thingId)) {
+    // could verify that thingId exists in offline or cloud storage...
+    throw new Error(NOT_VALID_UUID);
   }
+
+  const mintArgs: MintArgs = {
+    network: "testnet", // This will be env.property
+    nftContractId: args.nftContractId, // This could be generated by the user
+    metadata: {
+      reference: "", // everything logo
+    },
+    options: {
+      ownerId: args.ownerId,
+      metadataId: thingId,
+    },
+  }
+
+  // create reference on blockchain
+  return execute(mint(mintArgs), { wallet: args.wallet });
 }

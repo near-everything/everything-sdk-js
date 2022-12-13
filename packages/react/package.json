@@ -27,8 +27,6 @@
     "next": ">=10"
   },
   "dependencies": {
-    "@auth0/nextjs-auth0": "^2.0.1",
-    "@everything-sdk-js/data": "^0.0.1",
-    "@everything-sdk-js/sdk": "^0.0.1"
+    "@auth0/nextjs-auth0": "^2.0.1"
   }
 }

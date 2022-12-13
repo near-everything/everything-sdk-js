@@ -90,7 +90,7 @@ function Characteristics({ attributes, setAttributes }) {
       {loading ? (
         <>Loading...</>
       ) : (
-        <div className="flex flex-col w-1/2">
+        <div className="flex flex-col w-full">
           <p className="font-semibold mb-2">select attributes for template</p>
           <CreatableSelect
             id="attribute_select"

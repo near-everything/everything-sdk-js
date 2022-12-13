@@ -2,8 +2,8 @@
   "name": "@everything-sdk-js/sdk",
   "version": "0.0.1",
   "description": "",
-  "main": "dist/everything-sdk-js/packages/sdk/src/index.js",
-  "types": "dist/everything-sdk-js/packages/sdk/src/index.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
     "test": "jest"
@@ -26,9 +26,12 @@
     "rollup-plugin-typescript2": "^0.34.1",
     "ts-jest": "^29.0.3",
     "ts-node": "^10.9.1",
-    "typescript": "^4.9.3"
+    "typescript": "^4.9.3",
+    "uuidv4": "^6.2.13"
   },
   "dependencies": {
+    "@mintbase-js/sdk": "file:../../../mintbase-js/packages/sdk/mintbase-js-sdk-0.0.5-alpha.0.tgz",
+    "@mintbase-js/storage": "file:../../../mintbase-js/packages/storage/mintbase-js-storage-0.0.5-alpha.0.tgz",
     "@near-wallet-selector/core": "^7.3.0"
   }
 }

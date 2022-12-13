@@ -1,30 +1,14 @@
-import { testMessage } from "@everything-sdk-js/react";
-import Head from "next/head";
-import Link from "next/link";
-import { useWallet } from "../../../../mintbase-js/packages/react/lib";
-import Layout from "../components/Layout";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import "@near-wallet-selector/modal-ui/styles.css";
+import Head from "next/head";
+import Link from "next/link";
+import { useWallet } from "@mintbase-js/react";
+import Layout from "../components/Layout";
 
 export default function Home() {
-  const {
-    connect,
-    disconnect,
-    activeAccountId,
-    // isConnected,
-    isWaitingForConnection,
-    isWalletSelectorSetup,
-    signMessage,
-  } = useWallet();
+  const { connect, disconnect, activeAccountId, isWalletSelectorSetup } =
+    useWallet();
   const { user, isLoading } = useUser();
-
-  const signMessageTest = async () => {
-    await signMessage({
-      message: "hey",
-      callbackUrl: `${window.location.origin}/wallet-callback`,
-      meta: JSON.stringify({ type: "signature" }),
-    });
-  };
 
   return (
     <>
@@ -34,74 +18,93 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex flex-col items-center h-full w-full">
-        <h1>{testMessage}</h1>
-
-        <div className="flex flex-1">
-          <Link href="/playground">
-            <h2>Playground &rarr;</h2>
-            <p>Customize your template</p>
-          </Link>
-        </div>
-        <div className="flex flex-1">
-          <Link href="/explore">
-            <h2>Explore &rarr;</h2>
-            <p>Fetch data</p>
-          </Link>
-        </div>
         <br />
         <br />
-        <br />
-        {isWaitingForConnection ? (
-          <div>Waiting for a wallet connection...</div>
-        ) : null}
-
-        {isWalletSelectorSetup ? (
-          <div>
-            {activeAccountId ? (
-              <div className="">
-                <p className="text-white">
-                  You are logged in as {activeAccountId}
-                </p>
-                <button className="btn" onClick={disconnect}>
-                  DISCONNECT
-                </button>
+        <div className="card w-3/4 bg-base-100 shadow-xl">
+          <div className="card-body">
+            <h2 className="card-title">connect to use the tools</h2>
+            <div className="divider"></div>
+            <div className="flex grid-cols-2 gap-4 w-full">
+              <div className="flex flex-1 flex-col text-center">
+                <p className="text-xl">everything</p>
+                <div>
+                  {isLoading ? null : (
+                    <>
+                      {user ? (
+                        <>
+                          <p className="mb-2">
+                            you are logged in as {user.nickname}
+                          </p>
+                          <a href="/api/auth/logout">
+                            <button className="btn normal-case">
+                              disconnect
+                            </button>
+                          </a>
+                        </>
+                      ) : (
+                        <>
+                          <p className="mb-2">you are not logged in</p>
+                          <a href="/api/auth/login">
+                            <button className="btn normal-case">connect</button>
+                          </a>
+                        </>
+                      )}
+                    </>
+                  )}
+                </div>
               </div>
-            ) : (
-              <div className="">
-                <h2>To continue, login with NEAR</h2>
-                <button className="btn close-button" onClick={connect}>
-                  CONNECT
-                </button>
+              <div className="flex flex-1 flex-col text-center">
+                <p className="text-xl">NEAR</p>
+                <div>
+                  {isWalletSelectorSetup ? (
+                    <div>
+                      {activeAccountId ? (
+                        <>
+                          <p className="mb-2">
+                            you are logged in as {activeAccountId}
+                          </p>
+                          <button
+                            className="btn normal-case"
+                            onClick={disconnect}
+                          >
+                            disconnect
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          <p className="mb-2">you are not connected to NEAR</p>
+                          <button className="btn normal-case" onClick={connect}>
+                            connect
+                          </button>
+                        </>
+                      )}
+                    </div>
+                  ) : (
+                    <div>Waiting for wallet selector components...</div>
+                  )}
+                </div>
               </div>
-            )}
+            </div>
           </div>
-        ) : (
-          <div>Waiting for wallet selector components...</div>
-        )}
-
-        {activeAccountId ? (
-          <button className="btn" onClick={signMessageTest}>
-            SIGN MESSAGE
-          </button>
-        ) : null}
-        <div className="flex justify-center">
-          {isLoading ? null : (
-            <>
-              {user ? (
-                <a href="/api/auth/logout">
-                  <button className="btn normal-case">
-                    disconnect from everything
-                  </button>
-                </a>
-              ) : (
-                <a href="/api/auth/login">
-                  <button className="btn normal-case">
-                    connect to everything
-                  </button>
-                </a>
-              )}
-            </>
-          )}
+        </div>
+        <br />
+        <div className="flex grid-cols-2 gap-4 w-3/4 justify-center">
+          <div className="card flex-1 bg-base-100 shadow-xl">
+            <Link href="/playground">
+              <div className="card-body">
+                <h2 className="card-title">playground &rarr;</h2>
+                <p>create things and media</p>
+              </div>
+            </Link>
+          </div>
+          <div className="card flex-1 bg-base-100 shadow-xl">
+            <Link href="/explore">
+              <div className="card-body">
+                <h2 className="card-title">explore &rarr;</h2>
+                <p>use the query tool to fetch data</p>
+              </div>
+            </Link>
+          </div>
         </div>
       </main>
     </>

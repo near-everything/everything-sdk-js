@@ -4,6 +4,7 @@ interface CreateMediaResponse {
 }
 
 export type CreateMediaArgs = {
+  thingId?: string,
   files: any[],
   storage: string[]
 };

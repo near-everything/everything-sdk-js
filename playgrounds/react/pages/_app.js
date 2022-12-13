@@ -9,7 +9,7 @@ import "swiper/css";
 import "swiper/css/effect-cards";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { WalletContextProvider } from "../../../../mintbase-js/packages/react/lib";
+import { WalletContextProvider } from "@mintbase-js/react";
 import "../styles/globals.css";
 
 function App({ Component, pageProps }) {
