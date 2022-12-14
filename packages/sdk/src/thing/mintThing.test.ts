@@ -6,9 +6,10 @@ import { mintThing } from "./mintThing";
 jest.mock('@mintbase-js/sdk');
 jest.mock('uuidv4');
 
-const wallet = {
-  id: "test-wallet.testnet"
-}
+const mockNearSelectorWallet = {
+  signAndSendTransaction: jest.fn(),
+  signAndSendTransactions: jest.fn(),
+};
 
 describe("mintThing should", () => {
   afterEach(() => jest.resetAllMocks());
@@ -18,7 +19,7 @@ describe("mintThing should", () => {
   });
 
   const thingArgs = {
-    wallet: wallet,
+    wallet: mockNearSelectorWallet as any,
     ownerId: "alice.testnet",
     nftContractId: "everything.test"
   }
@@ -41,6 +42,6 @@ describe("mintThing should", () => {
     await mintThing("uuid", thingArgs);
     expect(mint).toHaveBeenCalled();
     expect(mint).toHaveBeenCalledWith({ nftContractId: thingArgs.nftContractId, reference: "uuid", ownerId: thingArgs.ownerId });
-    expect(execute).toHaveBeenCalledWith("mock mint", { wallet });
+    expect(execute).toHaveBeenCalledWith("mock mint", { wallet: mockNearSelectorWallet });
   });
 })

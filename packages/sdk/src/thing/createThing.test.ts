@@ -42,7 +42,7 @@ describe("createThing should", () => {
     });
     const response = await createThing(thingArgs);
     expect(fetchEverything).toHaveBeenCalled();
-    expect(response).toEqual("uuid")
+    expect(response).toEqual({ thingId: "uuid" })
   });
 
   test("throw error if cloud and user not provided", async () => {
@@ -97,8 +97,7 @@ describe("createThingOnCloud should", () => {
         error: { message: "ohhh nooo" }
       }
     });
-    await expect(async () => {
-      await createThingOnCloud("uuid", cloudArgs)
-    }).rejects.toThrow("ohhh nooo");
+    const { error } = await createThingOnCloud("uuid", cloudArgs);
+    expect(error).toEqual({ message: "ohhh nooo" });
   });
 })

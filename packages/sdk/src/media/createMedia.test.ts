@@ -110,7 +110,7 @@ describe('createMediaOnBlockchain should', () => {
     const response = await createMediaOnBlockchain(files, blockchainArgs);
     expect(uploadFileToArweave).toHaveBeenCalled();
     expect(fetchEverything).toHaveBeenCalled();
-    expect(response).toEqual(["https://arweave.net/media123"]);
+    expect(response).toEqual({ urls: ["https://arweave.net/media123"] });
   });
 
   test("throw error if mutation fails", async () => {
