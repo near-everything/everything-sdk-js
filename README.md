@@ -77,8 +77,17 @@ Visit the corresponding documentation:
 ### Unit tests
 
 1. Clone the repo
-2. npm install
-3. npm test
+2. Install packages
+
+``` bash
+npm install
+```
+
+3. Run tests (this will run tests from all packages)
+
+``` bash
+npm test
+```
 
 ### Interactive testing (playground)
 
