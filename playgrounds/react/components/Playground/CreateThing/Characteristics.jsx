@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { gql, GraphQLClient } from "graphql-request";
 import { useState } from "react";
 import AttributeField from "./AttributeField";
-import CreatableSelect from "../CreatableSelect";
+import CreatableSelect from "../../CreatableSelect";
 import { getAttributes } from "@everything-sdk-js/data";
 
 function Characteristics({ attributes, setAttributes }) {

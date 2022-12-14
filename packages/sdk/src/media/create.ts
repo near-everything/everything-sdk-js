@@ -1,12 +1,15 @@
 import { uploadFileToArweave } from "@mintbase-js/storage";
-import { MEDIA_UPLOAD_ENDPOINT, STORAGE_TYPE } from "../constants";
+import { MEDIA_UPLOAD_ENDPOINT } from "../constants";
 import { fetchEverything } from "../utils";
 import { createMediaMutation } from "./create.mutation";
-import { CreateMediaArgs, CreateMediaResponse } from "./media";
 
 type CreateMediaCloudArgs = {
   user: any,
   thingId?: string
+}
+
+type CloudError = {
+  message: string
 }
 
 export async function createMediaOnCloud(files: File[], args: CreateMediaCloudArgs): Promise<any> {
@@ -25,10 +28,11 @@ export async function createMediaOnCloud(files: File[], args: CreateMediaCloudAr
     }
 
     const response = await uploadFilesToCloud(formData);
+    return response;
     // TODO: what should this return?
   } catch (error: unknown) {
-    // TODO: Error handling from api
-    console.log(error)
+    console.error(`Error creating media: ${(error as CloudError).message}`)
+    throw error;
   }
 }
 
@@ -48,7 +52,7 @@ async function uploadFilesToCloud(
     } else if (response.status === 500) {
       throw new Error(`Error occurred during upload: ${data.errorMessage}`);
     } else {
-      throw new Error(`An error has occured: ${response.status}`); 
+      throw new Error(`An error has occured: ${response.status}`);
     }
   }
   return data;
@@ -58,26 +62,23 @@ type CreateMediaBlockchainArgs = {
   thingId?: string
 }
 
-export async function createMediaOnBlockchain(files: File[], args: CreateMediaBlockchainArgs): Promise<any> {
+export async function createMediaOnBlockchain(files: File[], args: CreateMediaBlockchainArgs): Promise<string[]> {
+  const urls: string[] = [];
   for (let i = 0; i < files.length; i++) {
-      const response = await uploadFileToArweave(files[i], `${new Date().toISOString()}`); //  + '-' + files[i].originalname
-      const url = `https://arweave.net/${response.id}`;
-      const variables = {
-        input: {
-          url,
-          thingId: args.thingId
-        }
+    const response = await uploadFileToArweave(files[i], `${new Date().toISOString()}`); //  + '-' + files[i].originalname
+    const url = `https://arweave.net/${response.id}`;
+    urls.push(url);
+    const variables = {
+      input: {
+        url,
+        thingId: args.thingId
       }
-      const { data, error } = await fetchEverything({ query: createMediaMutation, variables });
-      if (error) {
-        console.error("Error creating media", error.message);
-        // Do anything?
-      }
-
-      // This will throw Max upload error message
-      // Or some HTTP error... not sure what to do with that. If it is Max upload, probably wanna just show that back to the user?
-
-      // now we have a url
-      // make a request to createMedia, which is a plugin that will auto create the tag as well if provided
+    }
+    const { error } = await fetchEverything({ query: createMediaMutation, variables });
+    if (error) {
+      console.error("Error creating media", error.message);
+      throw new Error(`Error creating media ${error.message}`)
+    }
   }
+  return urls;
 }

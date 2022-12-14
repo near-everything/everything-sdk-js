@@ -21,7 +21,6 @@ export const thingById = async (
 
     if (error) {
       console.error('Error fetching thing', error.message);
-      throw error;
     }
 
     return { data, error };

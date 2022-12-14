@@ -1,24 +1,22 @@
-import { thingById } from "@everything-sdk-js/data";
 import Head from "next/head";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Request, { options } from "../../components/Explore/Request";
+import Response from "../../components/Explore/Response";
 import Layout from "../../components/Layout";
 
-const options = [
-  "things",
-  "thingById",
-  "thingsByOwner",
-  "attributes",
-  "attributeById",
-];
-
 export default function Explore() {
-  const [query, setQuery] = useState(options[0]);
-  const [param, setParam] = useState(null);
-  const [data, setData] = useState(null);
-  const [error, setError] = useState(null);
+  const [query, setQuery] = useState(0);
+  const [param, setParam] = useState("");
+  const [data, setData] = useState("");
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    setData("");
+    setError("");
+  }, [query]);
 
   const runQuery = async () => {
-    const { data, error } = await thingById(param);
+    const { data, error } = await options[query].fn(param);
     setData(data);
     setError(error);
   };
@@ -34,47 +32,16 @@ export default function Explore() {
       <main className="flex flex-col items-center h-full w-full">
         <p className="text-4xl m-8">explore</p>
         <div className="w-1/2">
-          <div className="flex w-full justify-between">
-            <div>
-              <select
-                className="select w-full max-w-xs"
-                value={query}
-                onChange={(e) => {
-                  setQuery(e.target.value);
-                  setParam("");
-                }}
-              >
-                {options.map((it, index) => (
-                  <option key={index}>{it}</option>
-                ))}
-              </select>
-            </div>
-            {query !== "things" && query !== "attributes" ? (
-              <div>
-                <input
-                  type="text"
-                  placeholder={"enter parameter"}
-                  value={param}
-                  onChange={(e) => setParam(e.target.value)}
-                  className="input w-full max-w-xs"
-                />
-              </div>
-            ) : null}
-            <button className={"btn normal-case"} onClick={runQuery}>
-              run query
-            </button>
-          </div>
+          <Request
+            query={query}
+            setQuery={setQuery}
+            param={param}
+            setParam={setParam}
+            runQuery={runQuery}
+          />
           <br />
-          <div>
-            <p className="pb-1">response:</p>
-            <textarea
-              className="textarea h-96 w-full"
-              disabled
-              value={
-                (data && JSON.stringify(data, null, 2)) ||
-                (error && JSON.stringify(error, null, 2))
-              }
-            />
+          <div className="h-96">
+            <Response data={data} error={error} />
           </div>
         </div>
       </main>

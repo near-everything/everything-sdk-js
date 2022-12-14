@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { gql, GraphQLClient } from "graphql-request";
 import React, { useState } from "react";
-import CreatableSelect from "../CreatableSelect";
+import CreatableSelect from "../../CreatableSelect";
 
 const AttributeField = React.forwardRef(function AttributeField(
   { attributeId, setAttributeOption, value },
