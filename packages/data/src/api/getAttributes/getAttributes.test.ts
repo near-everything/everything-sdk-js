@@ -7,7 +7,7 @@ import { attributesMock } from './getAttributes.mock';
 
 jest.mock('graphql-request');
 
-describe('attributes', () => {
+describe('getAttributes', () => {
   afterAll(() => {
     jest.resetAllMocks();
     jest.restoreAllMocks();

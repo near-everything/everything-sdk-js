@@ -12,7 +12,7 @@ interface AttributeByIdData {
  * Makes a request to mesh api for attribute by id data
  * @returns data available from provided attribute id  {@link AttributeByIdData}
  */
-export const attributeById = async (
+export const getAttributeById = async (
   attributeId: number
 ): Promise<AttributeByIdData> => {
   const fetchData = async (): Promise<AttributeByIdData> => {

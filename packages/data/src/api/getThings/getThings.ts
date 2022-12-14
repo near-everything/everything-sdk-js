@@ -11,7 +11,7 @@ interface ThingsData {
  * Makes a request to mesh api for all thing data
  * @returns tokens publically available on blockchain and any data exposed to user {@link ThingsData}
  */
-export const things = async (): Promise<ThingsData> => {
+export const getThings = async (): Promise<ThingsData> => {
   const fetchData = async (): Promise<ThingsData> => {
     const { data, error } = await fetchEverything<ThingsResults>({
       query: thingsQuery

@@ -26,7 +26,7 @@ type Attribute {
 
     """The method to use when ordering `Characteristic`."""
     orderBy: [CharacteristicsOrderBy!] = [PRIMARY_KEY_ASC]
-  ): CharacteristicsConnection! 
+  ): CharacteristicsConnection!
   createdAt: Datetime!
   id: Int!
   isApproved: Boolean
@@ -182,6 +182,30 @@ enum CharacteristicsOrderBy {
   THING_ID_DESC
 }
 
+input CreateAttributeInput {
+  name: String!
+  options: [CreateOptionInput!]!
+}
+
+type CreateAttributePayload {
+  attribute: Attribute
+  query: Query
+}
+
+input CreateMediaInput {
+  thingId: String
+  url: String!
+}
+
+type CreateMediaPayload {
+  media: Media
+  query: Query
+}
+
+input CreateOptionInput {
+  value: String!
+}
+
 input CreateThingInput {
   characteristics: [NewCharacteristicInput!]!
   ownerId: String!
@@ -291,12 +315,36 @@ enum MediaOrderBy {
 The root mutation type which contains root level fields which mutate data.
 """
 type Mutation {
+  createAttribute(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateAttributeInput!
+  ): CreateAttributePayload
+  createMedia(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateMediaInput!
+  ): CreateMediaPayload
   createThing(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     """
     input: CreateThingInput!
   ): CreateThingPayload
+  proposeAttribute(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: ProposeAttributeInput!
+  ): ProposeAttributePayload
+  proposeOption(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: ProposeOptionInput!
+  ): ProposeOptionPayload
 }
 
 input NewCharacteristicInput {
@@ -431,6 +479,25 @@ enum PrivacyType {
   FRIENDS
   PRIVATE
   PUBLIC
+}
+
+input ProposeAttributeInput {
+  name: String!
+}
+
+type ProposeAttributePayload {
+  attribute: Attribute
+  query: Query
+}
+
+input ProposeOptionInput {
+  attributeId: Int!
+  value: String!
+}
+
+type ProposeOptionPayload {
+  option: Option
+  query: Query
 }
 
 """The root query type which gives access points into the data universe."""

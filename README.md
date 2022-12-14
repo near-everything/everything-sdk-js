@@ -78,6 +78,14 @@ Visit the corresponding documentation:
 
 ---
 
+### Unit tests
+
+1. Clone the repo
+2. npm install
+3. npm test
+
+### Interactive testing (playground)
+
 1. Run the Dockerfile
 
 ``` bash
@@ -86,7 +94,10 @@ docker-compose up
 
 This will automatically set up the environment, start any necessary mock services, and run the tests. View the terminal to see test results.
 
-2. Open the [playground](http://localhost:3050) in browser to interact with the SDK methods or query data
+2. Open the [playground](http://localhost:8000) in browser to interact with the SDK methods or query data
+
+_IN PROGRESS_: Local is currently not connecting to the everything api because I don't want to move it to the mono repo...
+A live version of the app can be used [here](https://playground.everything.dev) which is connected to test environemnt.
 
 </br>
 

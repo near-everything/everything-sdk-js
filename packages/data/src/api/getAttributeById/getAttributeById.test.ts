@@ -1,4 +1,4 @@
-import { attributeById } from './getAttributeById';
+import { getAttributeById } from './getAttributeById';
 import { AttributeByIdResults } from './getAttributeById.types';
 
 import { attributeByIdMock } from './getAttributeById.mock';
@@ -7,7 +7,7 @@ import { GraphqlFetchingError } from '../../graphql/fetch';
 
 jest.mock('graphql-request');
 
-describe('attributeById', () => {
+describe('getAttributeById', () => {
   afterAll(() => {
     jest.resetAllMocks();
     jest.restoreAllMocks();
@@ -22,7 +22,7 @@ describe('attributeById', () => {
       request: (): Promise<AttributeByIdResults> => Promise.resolve(attributeByIdMock),
     }));
 
-    const result = await attributeById(1);
+    const result = await getAttributeById(1);
 
     expect(result?.data?.attribute.id).toBe(
       1
@@ -39,7 +39,7 @@ describe('attributeById', () => {
     (GraphQLClient as jest.Mock).mockImplementationOnce(() => ({
       request: (): Promise<AttributeByIdResults> => Promise.reject(exploded),
     }));
-    const result = await attributeById(123);
+    const result = await getAttributeById(123);
     expect(result?.error).toEqual(exploded);
   });
 });

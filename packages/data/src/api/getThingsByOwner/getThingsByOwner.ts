@@ -12,7 +12,7 @@ interface ThingsByOwnerData {
  * Makes a request to mesh api for all things by owner data
  * @returns all things with matching ownerId {@link ThingsByOwnerData}
  */
-export const thingsByOwner = async (
+export const getThingsByOwner = async (
   ownerId: string
 ): Promise<ThingsByOwnerData> => {
   const fetchData = async (): Promise<ThingsByOwnerData> => {

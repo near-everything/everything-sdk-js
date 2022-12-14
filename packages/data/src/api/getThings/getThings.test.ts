@@ -1,4 +1,4 @@
-import { things } from './getThings';
+import { getThings } from './getThings';
 import { ThingsResults } from './getThings.types';
 
 import { GraphQLClient } from 'graphql-request';
@@ -7,7 +7,7 @@ import { thingsMock } from './getThings.mock';
 
 jest.mock('graphql-request');
 
-describe('things', () => {
+describe('getThings', () => {
   afterAll(() => {
     jest.resetAllMocks();
     jest.restoreAllMocks();
@@ -22,7 +22,7 @@ describe('things', () => {
       request: (): Promise<ThingsResults> => Promise.resolve(thingsMock),
     }));
 
-    const result = await things();
+    const result = await getThings();
 
     expect(result?.data?.things.edges[0].node.id).toBe(
       1
@@ -39,7 +39,7 @@ describe('things', () => {
     (GraphQLClient as jest.Mock).mockImplementationOnce(() => ({
       request: (): Promise<ThingsResults> => Promise.reject(exploded),
     }));
-    const result = await things();
+    const result = await getThings();
     expect(result?.error).toEqual(exploded);
   });
 });

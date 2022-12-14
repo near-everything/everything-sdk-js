@@ -12,7 +12,7 @@ interface ThingByIdData {
  * Makes a request to mesh api for thing by id
  * @returns data available from provided thing id {@link ThingByIdData}
  */
-export const thingById = async (
+export const getThingById = async (
   thingId: string | number
 ): Promise<ThingByIdData> => {
   const fetchData = async (): Promise<ThingByIdData> => {

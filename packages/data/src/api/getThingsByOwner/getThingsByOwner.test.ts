@@ -1,4 +1,4 @@
-import { thingsByOwner } from './getThingsByOwner';
+import { getThingsByOwner } from './getThingsByOwner';
 import { ThingsByOwnerResults } from './getThingsByOwner.types';
 
 import { thingsByOwnerMock } from './getThingsByOwner.mock';
@@ -7,7 +7,7 @@ import { GraphqlFetchingError } from '../../graphql/fetch';
 
 jest.mock('graphql-request');
 
-describe('thingsByOwner', () => {
+describe('getThingsByOwner', () => {
   afterAll(() => {
     jest.resetAllMocks();
     jest.restoreAllMocks();
@@ -22,7 +22,7 @@ describe('thingsByOwner', () => {
       request: (): Promise<ThingsByOwnerResults> => Promise.resolve(thingsByOwnerMock),
     }));
 
-    const result = await thingsByOwner('1');
+    const result = await getThingsByOwner('1');
 
     expect(result?.data?.things.edges[0].node.id).toBe(
       1
@@ -39,7 +39,7 @@ describe('thingsByOwner', () => {
     (GraphQLClient as jest.Mock).mockImplementationOnce(() => ({
       request: (): Promise<ThingsByOwnerResults> => Promise.reject(exploded),
     }));
-    const result = await thingsByOwner('123');
+    const result = await getThingsByOwner('123');
     expect(result?.error).toEqual(exploded);
   });
 });
