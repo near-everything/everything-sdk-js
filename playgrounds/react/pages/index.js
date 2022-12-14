@@ -35,18 +35,18 @@ export default function Home() {
                           <p className="mb-2">
                             you are logged in as {user.nickname}
                           </p>
-                          <a href="/api/auth/logout">
+                          <Link href="/api/auth/logout">
                             <button className="btn normal-case">
                               disconnect
                             </button>
-                          </a>
+                          </Link>
                         </>
                       ) : (
                         <>
                           <p className="mb-2">you are not logged in</p>
-                          <a href="/api/auth/login">
+                          <Link href="/api/auth/login">
                             <button className="btn normal-case">connect</button>
-                          </a>
+                          </Link>
                         </>
                       )}
                     </>
