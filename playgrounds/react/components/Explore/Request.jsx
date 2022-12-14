@@ -1,11 +1,11 @@
-import { thingById, things, thingsByOwner, getAttributes, attributeById } from "@everything-sdk-js/data";
+import { getThingById, getThings, getThingsByOwner, getAttributes, getAttributeById } from "@everything-sdk-js/data";
 
 export const options = [
-  { label: "things", fn: things },
-  { label: "thingById", fn: thingById },
-  { label: "thingsByOwner", fn: thingsByOwner },
+  { label: "getThings", fn: getThings },
+  { label: "getThingById", fn: getThingById },
+  { label: "getThingsByOwner", fn: getThingsByOwner },
   { label: "getAttributes", fn: getAttributes },
-  { label: "attributeById", fn: attributeById },
+  { label: "getAttributeById", fn: getAttributeById },
 ];
 
 function Request({ query, setQuery, param, setParam, runQuery }) {
@@ -28,7 +28,7 @@ function Request({ query, setQuery, param, setParam, runQuery }) {
           ))}
         </select>
       </div>
-      {options[query].label !== "things" && options[query].label !== "getAttributes" ? (
+      {options[query].label !== "getThings" && options[query].label !== "getAttributes" ? (
         <div>
           <input
             type="text"
