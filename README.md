@@ -33,7 +33,7 @@
 
 **everything** is a framework for putting it all together; it provides methods for creating and querying data in both Web2 and Web3 in order to foster opinionated development of real world applications, marketplaces, and services for the interconnected economy of tomorrow.
 
-SDK development funded by [Mintbase Grant Program]()
+SDK development funded by [Mintbase Grant Program](https://github.com/near-everything/mintbase-grants-program)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -41,11 +41,11 @@ SDK development funded by [Mintbase Grant Program]()
 
 ## usage
 
-The methods provided in this SDK require Auth0 integration for connecting to **everything** and Mintbase integration for connected to [NEAR Protocol]().
+The methods provided in this SDK require Auth0 integration for connecting to **everything** and Mintbase integration for connected to [NEAR Protocol](https://near.org).
 
 ### Setting up Auth0
 
-Follow the steps in [Auth0 Documentation]() for your specific application.
+Follow the steps in [Auth0 Documentation](https://auth0.com/docs/get-started) for your specific application.
 
 _IN PROGRESS_: We are working to create a custom SSO login that can be available in development of your own apps to generate your own AUTH0_CLIENT_SECRET. Unfortunately, until then, the same AUTH0_CLIENT_SECRET must be shared across all participating applications. If you want to develop a participating application, please reach out to elliot@everything.dev.
 
@@ -53,7 +53,7 @@ _IN PROGRESS_: We are working to create a custom SSO login that can be available
 
 ### Setting up Mintbase
 
-Follow the steps in [Mintbase Documentation]() for your specific application.
+Follow the steps in [Mintbase Documentation](https://docs.mintbase.io/dev/getting-started) for your specific application.
 
 </br>
 

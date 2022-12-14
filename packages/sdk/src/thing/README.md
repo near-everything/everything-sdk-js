@@ -1,7 +1,7 @@
 # Thing
 
 Provides methods for creating Things in everything.
-Things are uploaded to [everything cloud storage]().
+Things are uploaded to everything cloud storage.
 
 _IN PROGRESS_: More options in progress, Arweave upload in development, will offer offline storage.
 
@@ -9,8 +9,6 @@ _IN PROGRESS_: More options in progress, Arweave upload in development, will off
 </br>
 
 ## available methods
-
----
 
 ### createThing
 
@@ -49,7 +47,7 @@ Currently only supports image/jpeg and image/png file types.
 
 ### mintThing
 
-Provided an id for an existing Thing, will mint reference on [NEAR Protocol]() via [Mintbase SDK](). Can be used for history of ownership and marketplace transactions.
+Provided an id for an existing Thing, will mint reference on [NEAR Protocol](https://near.org) via [Mintbase SDK](https://github.com/Mintbase/mintbase-js). Can be used for history of ownership and marketplace transactions.
 
 **Requires user to be connected to NEAR.**
 

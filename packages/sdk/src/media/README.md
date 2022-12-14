@@ -1,7 +1,7 @@
 # Media
 
 Provides methods for creating Media in everything.
-Media can be uploaded to either [everything cloud storage]() or [Arweave]() via the [Mintbase SDK]().
+Media can be uploaded to either everything cloud storage or [Arweave](https://www.arweave.org) via the [Mintbase SDK](https://github.com/Mintbase/mintbase-js).
 Then records of the Media and associated Tags to the provided thingId are created in cloud storage.
 
 </br>
@@ -9,11 +9,9 @@ Then records of the Media and associated Tags to the provided thingId are create
 
 ## available methods
 
----
-
 ### createMediaOnCloud
 
-Uploads array of files to [everything cloud storage](). 
+Uploads array of files to everything cloud storage. 
 Will automatically create Media and associated Tags from the provided thingId.
 
 **Requires user to be connected to everything via Auth0.**
@@ -47,7 +45,7 @@ Currently only supports image/jpeg and image/png file types.
 
 ### createMediaOnBlockchain
 
-Uploads array of files to [Arweave]() via [Mintbase SDK](). 
+Uploads array of files to [Arweave](https://www.arweave.org) via [Mintbase SDK](https://github.com/Mintbase/mintbase-js). 
 Will automatically create Media and associated Tags from the provided thingId.
 
 ``` js

@@ -9,15 +9,13 @@ _IN PROGRESS_: currently reading data directly from everything api or mintbase i
 
 ## available methods
 
----
-
 ### getThings
 
 ``` js
   const { data, error} = await getThings();
 ```
 
-Fetches all available thing data from the mesh. This includes all public blockchain data from the [Mintbase Indexer](), all public data from [everything cloud storage](), and any available data from access token (if provided).
+Fetches all available thing data from the mesh. This includes all public blockchain data from the [Mintbase Indexer](https://docs.mintbase.io/dev/read-data/mintbase-graph), all public data from everything cloud storage, and any available data from access token (if provided).
 
 </br>
 
@@ -29,7 +27,7 @@ Fetches all available thing data from the mesh. This includes all public blockch
   const { data, error} = await getThingById(thingId);
 ```
 
-Fetches all available data for provided thing Id from the mesh. This includes any public blockchain data from the [Mintbase Indexer](), any public data from [everything cloud storage](), and any available data from access token (if provided).
+Fetches all available data for provided thing Id from the mesh. This includes any public blockchain data from the [Mintbase Indexer](https://docs.mintbase.io/dev/read-data/mintbase-graph), any public data from everything cloud storage, and any available data from access token (if provided).
 
 </br>
 
@@ -41,7 +39,7 @@ Fetches all available data for provided thing Id from the mesh. This includes an
   const { data, error} = await getThingsByOwner(ownerId);
 ```
 
-Fetches all available thing data for provided owner Id from the mesh. This includes any public blockchain data from the [Mintbase Indexer](), any public data from [everything cloud storage](), and any available data from access token (if provided).
+Fetches all available thing data for provided owner Id from the mesh. This includes any public blockchain data from the [Mintbase Indexer](https://docs.mintbase.io/dev/read-data/mintbase-graph), any public data from everything cloud storage, and any available data from access token (if provided).
 
 </br>
 
