@@ -30,8 +30,8 @@
     "uuidv4": "^6.2.13"
   },
   "dependencies": {
-    "@mintbase-js/sdk": "file:../../../mintbase-js/packages/sdk/mintbase-js-sdk-0.0.5-alpha.0.tgz",
-    "@mintbase-js/storage": "file:../../../mintbase-js/packages/storage/mintbase-js-storage-0.0.5-alpha.0.tgz",
+    "@mintbase-js/sdk": "file:../../temp/tarballs/mintbase-js-sdk-0.0.5-alpha.0.tgz",
+    "@mintbase-js/storage": "file:../../temp/tarballs/mintbase-js-storage-0.0.5-alpha.0.tgz",
     "@near-wallet-selector/core": "^7.3.0"
   }
 }

@@ -30,7 +30,7 @@
     "react-select": "^5.7.0",
     "react-webcam": "^7.0.1",
     "swiper": "^8.4.5",
-    "@mintbase-js/react": "file:../../../mintbase-js/packages/react/mintbase-js-react-0.0.5-alpha.0.tgz"
+    "@mintbase-js/react": "file:../../temp/tarballs/mintbase-js-react-0.0.5-alpha.0.tgz"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.13",
