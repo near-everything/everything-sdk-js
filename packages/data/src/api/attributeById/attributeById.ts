@@ -21,7 +21,6 @@ export const attributeById = async (
 
     if (error) {
       console.error('Error fetching attribute', error.message);
-      throw error;
     }
 
     return { data, error };

@@ -39,8 +39,7 @@ describe('attributeById', () => {
     (GraphQLClient as jest.Mock).mockImplementationOnce(() => ({
       request: (): Promise<AttributeByIdResults> => Promise.reject(exploded),
     }));
-    await expect(attributeById(123)).rejects.toThrow(
-      exploded,
-    );
+    const result = await attributeById(123);
+    expect(result?.error).toEqual(exploded);
   });
 });

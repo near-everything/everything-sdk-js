@@ -21,7 +21,6 @@ export const thingsByOwner = async (
 
     if (error) {
       console.error('Error fetching things by owner', error.message);
-      throw error;
     }
 
     return { data, error };

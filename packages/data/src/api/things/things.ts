@@ -16,7 +16,6 @@ export const things = async (): Promise<ThingsData> => {
 
     if (error) {
       console.error('Error fetching things', error.message);
-      throw error;
     }
 
     return { data, error };

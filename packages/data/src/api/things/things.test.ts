@@ -39,8 +39,7 @@ describe('things', () => {
     (GraphQLClient as jest.Mock).mockImplementationOnce(() => ({
       request: (): Promise<ThingsResults> => Promise.reject(exploded),
     }));
-    await expect(things()).rejects.toThrow(
-      exploded,
-    );
+    const result = await things();
+    expect(result?.error).toEqual(exploded);
   });
 });

@@ -16,7 +16,6 @@ export const getAttributes = async (): Promise<AttributesData> => {
 
     if (error) {
       console.error('Error fetching attributes', error.message);
-      throw error;
     }
 
     return { data, error };

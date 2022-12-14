@@ -39,8 +39,7 @@ describe('thingsByOwner', () => {
     (GraphQLClient as jest.Mock).mockImplementationOnce(() => ({
       request: (): Promise<ThingsByOwnerResults> => Promise.reject(exploded),
     }));
-    await expect(thingsByOwner('123')).rejects.toThrow(
-      exploded,
-    );
+    const result = await thingsByOwner('123');
+    expect(result?.error).toEqual(exploded);
   });
 });
