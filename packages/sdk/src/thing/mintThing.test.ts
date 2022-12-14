@@ -1,11 +1,9 @@
-import { execute } from "@mintbase-js/sdk";
-import { mint } from "@mintbase-js/sdk/lib/v1";
+import { execute, mint } from "@mintbase-js/sdk";
 import { isUuid } from "uuidv4";
 import { NOT_VALID_UUID } from "../constants";
 import { mintThing } from "./mintThing";
 
 jest.mock('@mintbase-js/sdk');
-jest.mock('@mintbase-js/sdk/lib/v1');
 jest.mock('uuidv4');
 
 const wallet = {
@@ -40,9 +38,9 @@ describe("mintThing should", () => {
     (mint as jest.Mock).mockImplementationOnce(() => (
       "mock mint"
     ));
-    const respone = await mintThing("uuid", thingArgs);
+    await mintThing("uuid", thingArgs);
     expect(mint).toHaveBeenCalled();
-    expect(mint).toHaveBeenCalledWith({ network: "testnet", nftContractId: thingArgs.nftContractId, metadata: { reference: "" }, options: { ownerId: thingArgs.ownerId, metadataId: "uuid" } });
+    expect(mint).toHaveBeenCalledWith({ nftContractId: thingArgs.nftContractId, reference: "uuid", ownerId: thingArgs.ownerId });
     expect(execute).toHaveBeenCalledWith("mock mint", { wallet });
   });
 })

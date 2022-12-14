@@ -1,7 +1,7 @@
 import { uploadFileToArweave } from "@mintbase-js/storage";
 import { MEDIA_UPLOAD_ENDPOINT } from "../constants";
 import { fetchEverything } from "../utils";
-import { createMediaMutation } from "./create.mutation";
+import { createMediaMutation } from "./createMedia.mutation";
 
 type CreateMediaCloudArgs = {
   user: any,
@@ -13,30 +13,28 @@ type CloudError = {
 }
 
 export async function createMediaOnCloud(files: File[], args: CreateMediaCloudArgs): Promise<any> {
+
+  const formData = new FormData();
+
+  if (args.thingId) {
+    // this is preparing for the future for if media is uploaded
+    // but should not be attributed with any thing
+    formData.append("thingId", args.thingId);
+  }
+  formData.append("userId", args.user.sub);
+  for (let i = 0; i < files.length; i++) {
+    formData.append("files", files[i]);
+  }
   try {
-    const formData = new FormData();
-
-    if (args.thingId) {
-      // this is preparing for the future for if media is uploaded
-      // but should not be attributed with any thing
-      formData.append("thingId", args.thingId);
-    }
-
-    formData.append("userId", args.user.sub);
-    for (let i = 0; i < files.length; i++) {
-      formData.append("files", files[i]);
-    }
-
     const response = await uploadFilesToCloud(formData);
     return response;
-    // TODO: what should this return?
   } catch (error: unknown) {
     console.error(`Error creating media: ${(error as CloudError).message}`)
     throw error;
   }
 }
 
-async function uploadFilesToCloud(
+export async function uploadFilesToCloud(
   formData: FormData
 ) {
   // TODO: This will require an access token
@@ -45,7 +43,6 @@ async function uploadFilesToCloud(
     body: formData
   })
   const data = await response.json();
-  console.log(response.ok)
   if (!response.ok) {
     if (response.status === 400) {
       throw new Error(`Upload to everything was unsuccessful: ${data.errorCode}, ${data.errorMessage}`);
