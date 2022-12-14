@@ -8,6 +8,10 @@ interface ThingsByOwnerData {
   error: undefined | GraphqlFetchingError;
 }
 
+/**
+ * Makes a request to mesh api for all things by owner data
+ * @returns all things with matching ownerId {@link ThingsByOwnerData}
+ */
 export const thingsByOwner = async (
   ownerId: string
 ): Promise<ThingsByOwnerData> => {

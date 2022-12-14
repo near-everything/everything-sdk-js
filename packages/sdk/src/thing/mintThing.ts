@@ -1,15 +1,21 @@
 import { execute, mint, MintArgs } from "@mintbase-js/sdk";
 import { AccountId } from "@mintbase-js/sdk/lib/v1";
-import { FinalExecutionOutcome } from "@near-wallet-selector/core";
+import { FinalExecutionOutcome, Wallet } from "@near-wallet-selector/core";
 import { isUuid } from "uuidv4";
 import { NOT_VALID_UUID } from "../constants";
 
 export type CreateThingBlockchainArgs = {
-  wallet: any, // TODO: Wallet type
+  wallet: Wallet,
   ownerId: AccountId,
   nftContractId: AccountId
 }
 
+/**
+ * mints a reference on chain for the provided thing id
+ * @param thingId 
+ * @param args {@link CreateThingBlockchainArgs}
+ * @returns a result for single transactions of {@link FinalExecutionOutcome}
+ */
 export async function mintThing(thingId: string, args: CreateThingBlockchainArgs): Promise<void | FinalExecutionOutcome> {
   if (!isUuid(thingId)) {
     throw new Error(NOT_VALID_UUID);

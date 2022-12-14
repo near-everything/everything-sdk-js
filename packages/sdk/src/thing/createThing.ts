@@ -16,11 +16,21 @@ export type CreateThingArgs = {
 };
 
 export type CreateThingCloudArgs = {
-  user: any, // this will come from Auth0, used to get access token
+  user: any,
   characteristics: Characteristic[]
 };
 
-export async function createThing(args: CreateThingArgs): Promise<string> {
+export type CreateThingResponse = {
+  thingId: string
+}
+
+/**
+ * Create a Thing on the specified storage service
+ * Storage options: cloud
+ * @param args {@link CreateThingArgs}
+ * @returns thingId
+ */
+export async function createThing(args: CreateThingArgs): Promise<CreateThingResponse> {
   const thingId = uuid();
 
   // create on cloud
@@ -36,10 +46,18 @@ export async function createThing(args: CreateThingArgs): Promise<string> {
     }
     await createThingOnCloud(thingId, cloudArgs);
   }
+
+  const response = { thingId }
   
-  return thingId;
+  return response;
 }
 
+
+/**
+ * Create a Thing on cloud storage (everything api)
+ * @param thingId
+ * @param args {@link CreateThingCloudArgs}
+ */
 export async function createThingOnCloud(thingId: string, args: CreateThingCloudArgs): Promise<CreateThingCloudResults> { // create type
   if (!isUuid(thingId)) {
     throw new Error(NOT_VALID_UUID);
@@ -60,7 +78,6 @@ export async function createThingOnCloud(thingId: string, args: CreateThingCloud
   // not expecting any response that isn't an error (what if attribute_id is not valid?)
   if (error) {
     console.error("Error creating thing", error.message);
-    throw Error(error.message);
   }
   return { data, error };
 }

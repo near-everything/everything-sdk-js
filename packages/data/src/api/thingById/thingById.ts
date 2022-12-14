@@ -8,6 +8,10 @@ interface ThingByIdData {
   error: undefined | GraphqlFetchingError;
 }
 
+/**
+ * Makes a request to mesh api for thing by id
+ * @returns data available from provided thing id {@link ThingByIdData}
+ */
 export const thingById = async (
   thingId: string | number
 ): Promise<ThingByIdData> => {

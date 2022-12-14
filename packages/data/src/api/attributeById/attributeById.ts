@@ -8,6 +8,10 @@ interface AttributeByIdData {
   error: undefined | GraphqlFetchingError;
 }
 
+/**
+ * Makes a request to mesh api for attribute by id data
+ * @returns data available from provided attribute id  {@link AttributeByIdData}
+ */
 export const attributeById = async (
   attributeId: number
 ): Promise<AttributeByIdData> => {
