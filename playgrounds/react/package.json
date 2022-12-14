@@ -10,9 +10,9 @@
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^2.0.0",
-    "@everything-sdk-js/data": "^0.0.1",
-    "@everything-sdk-js/react": "^0.0.1",
-    "@everything-sdk-js/sdk": "^0.0.1",
+    "@everything-sdk-js/data": "*",
+    "@everything-sdk-js/react": "*",
+    "@everything-sdk-js/sdk": "*",
     "@near-wallet-selector/core": "^7.3.0",
     "@near-wallet-selector/modal-ui": "^7.3.0",
     "@tanstack/react-query": "^4.19.1",
