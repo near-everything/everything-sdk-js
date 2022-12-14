@@ -3,16 +3,18 @@ import { AccountId, mint, MintArgs } from "@mintbase-js/sdk/lib/v1";
 import type { FinalExecutionOutcome, Wallet } from '@near-wallet-selector/core';
 import { isUuid, uuid } from 'uuidv4';
 import { MINT_ARGS_NOT_PROVIDED, NOT_VALID_UUID, STORAGE_TYPE, USER_NOT_PROVIDED, WALLET_NOT_PROVIDED } from "../constants";
+import { createMediaOnBlockchain, createMediaOnCloud } from "../media/create";
 import { fetchEverything, GraphqlFetchingError } from "../utils";
 import { createThingMutation } from "./create.mutation";
 
-type CreateThingResults = {
+export type CreateThingCloudResults = {
   data: any | null,
   error: undefined | GraphqlFetchingError
 }
 
-type CreateThingResponse = {
-
+export type CreateThingResponse = {
+  cloud?: CreateThingCloudResults,
+  blockchain?: void | FinalExecutionOutcome
 }
 
 export type CreateThingArgs = {
@@ -36,8 +38,13 @@ export type CreateThingBlockchainArgs = {
   nftContractId: AccountId
 }
 
-export async function createThing(args: CreateThingArgs) {
+export async function createThing(args: CreateThingArgs): Promise<CreateThingResponse> {
   const thingId = uuid();
+
+  const response: CreateThingResponse = {
+    cloud: undefined,
+    blockchain: undefined
+  }
 
   if (args.storage.includes(STORAGE_TYPE.CLOUD)) {
     // confirm user
@@ -48,16 +55,17 @@ export async function createThing(args: CreateThingArgs) {
       user: args.user,
       characteristics: args.characteristics
     }
-    const { data: data, error } = await createThingOnCloud(thingId, cloudArgs);
+    const results = await createThingOnCloud(thingId, cloudArgs);
+    response.cloud = results;
   }
 
+  // TODO: if there was an error don't continue
+
   if (args.storage.includes(STORAGE_TYPE.BLOCKCHAIN)) {
-    // insert thingId into mintArgs
     if (!args.ownerId || !args.nftContractId) {
       throw new Error(MINT_ARGS_NOT_PROVIDED);
     }
     if (!args.wallet) {
-      // throw error
       throw new Error(WALLET_NOT_PROVIDED);
     }
     const blockchainArgs: CreateThingBlockchainArgs = {
@@ -65,11 +73,31 @@ export async function createThing(args: CreateThingArgs) {
       ownerId: args.ownerId,
       nftContractId: args.nftContractId
     }
-    const response = await createThingOnBlockchain(thingId, blockchainArgs)
+    // TODO: Provide an access key so no need for approval
+    const results = await createThingOnBlockchain(thingId, blockchainArgs)
+    response.blockchain = results;
   }
+  if (args.files) {
+    if (args.storage.includes("ARWEAVE")) {
+      
+      // check for thing id?
+      const arweaveArgs = {
+        thingId
+      }
+      await createMediaOnBlockchain(args.files, arweaveArgs)
+    } else {
+      const cloudArgs = {
+        user: args.user,
+        thingId
+      }
+      // const files = args.files.map(it => it = it.data);
+      await createMediaOnCloud(args.files, cloudArgs)
+    }
+  }
+  return response
 }
 
-export async function createThingOnCloud(thingId: string, args: CreateThingCloudArgs): Promise<CreateThingResults> { // TODO: replace with own type
+export async function createThingOnCloud(thingId: string, args: CreateThingCloudArgs): Promise<CreateThingCloudResults> { // TODO: replace with own type
   if (!isUuid(thingId)) {
     throw new Error(NOT_VALID_UUID);
   }

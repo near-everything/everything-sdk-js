@@ -129,6 +129,7 @@ describe("createThingOnCloud should", () => {
       }
     });
     const { data } = await createThingOnCloud("uuid", cloudArgs)
+    expect(fetchEverything).toHaveBeenCalled();
     expect(fetchEverything).toHaveBeenCalledWith({
       query: createThingMutation,
       variables: { input: { thingId: "uuid", ownerId: user.sub, characteristics } }
@@ -174,106 +175,8 @@ describe("createThingOnBlockchain should", () => {
       "mock mint"
     ));
     const respone = await createThingOnBlockchain("uuid", blockchainArgs);
+    expect(mint).toHaveBeenCalled();
     expect(mint).toHaveBeenCalledWith({ network: "testnet", nftContractId: blockchainArgs.nftContractId, metadata: { reference: "" }, options: { ownerId: blockchainArgs.ownerId, metadataId: "uuid" } });
     expect(execute).toHaveBeenCalledWith("mock mint", { wallet });
   });
 })
-
-// describe('create thing on cloud', () => {
-
-//   let mockRandomUUID: jest.SpyInstance;
-
-//   afterEach(() => jest.resetAllMocks());
-
-
-//   beforeAll(() => {
-//     jest.spyOn(global.console, 'error').mockImplementation(() => null);
-//   });
-
-//   const thingArgs = {
-//     user,
-//     wallet,
-//     characteristics
-//   };
-
-//   test("createThingOnCloud should call the everything api with correct arguments", async () => {
-//     (fetchEverything as jest.Mock).mockImplementation(() => {
-//       return {
-//         data: { createThing: { thing: { id: "123-daf" } } }
-//       }
-//     });
-//     const data = await createThing(thingArgs);
-//     expect(mockRandomUUID).toHaveBeenCalled();
-//     expect(fetchEverything).toHaveBeenCalledWith({
-//       query: createThingMutation,
-//       variables: { input: { thingId: "123-daf", ownerId: user.sub, characteristics } }
-//     });
-//     expect(data).toEqual({ data: { thingId: "123-daf" }, error: undefined })
-//   });
-
-//   test("createThing should return error if cloud returns error", async () => {
-//     (fetchEverything as jest.Mock).mockImplementation(() => {
-//       return {
-//         error: { message: "ohhh nooo" }
-//       }
-//     });
-//     const data = await createThing(thingArgs);
-//     expect(mockRandomUUID).toHaveBeenCalled();
-//     expect(fetchEverything).toHaveBeenCalledWith({
-//       query: createThingMutation,
-//       variables: { input: { thingId: "123-daf", ownerId: user.sub, characteristics } }
-//     });
-//     expect(data).toEqual({ data: undefined, error: { message: "ohhh nooo" } })
-//   });
-// });
-
-
-// describe('create thing on near', () => {
-
-//   let mockRandomUUID: jest.SpyInstance;
-
-//   afterEach(() => jest.resetAllMocks());
-
-//   beforeAll(() => {
-//     mockRandomUUID = jest.spyOn(crypto, 'randomUUID');
-//     mockRandomUUID.mockImplementation(() => '123-daf');
-//   });
-
-//   const thingArgs = {
-//     user,
-//     wallet,
-//     storage: [STORAGE_TYPE.BLOCKCHAIN],
-//     characteristics,
-//     mintArgs: { nftContractId: "sample.testnet", metadata: { reference: "https://everything.dev" }, options: { ownerId: "everything.testnet", metadataId: "123" } }
-//   };
-
-//   test("createThing should call execute with correct arguments", async () => {
-//     (mint as jest.Mock).mockImplementationOnce(() => (
-//       "mock mint"
-//     ));
-//     (execute as jest.Mock).mockImplementationOnce(() => (
-//       { receipts_outcome: "receipt123" }
-//     ));
-//     const data = await createThing(thingArgs);
-//     expect(mockRandomUUID).toHaveBeenCalled();
-//     expect(mint).toHaveBeenCalledWith({ nftContractId: "sample.testnet", metadata: { reference: "https://everything.dev" }, options: { ownerId: "everything.testnet", metadataId: "123" } });
-//     expect(execute).toHaveBeenCalledWith("mock mint", { wallet });
-//     expect(data).toEqual({ data: { receiptId: "receipt123" }, error: undefined })
-//   });
-// });
-
-
-// test("createThingOnBlockchain should call mint with correct arguments", async () => {
-//   (mint as jest.Mock).mockImplementationOnce(() => (
-//     "mock mint"
-//   ));
-//   (execute as jest.Mock).mockImplementationOnce(() => (
-//     { receipts_outcome: "receipt123" }
-//   ));
-// });
-
-
-
-// describe("create thing", () => {
-//   test("createThing should call createThingOnCloud and createThingOnBlockchain")
-// }

@@ -40,23 +40,17 @@ function Form() {
     if (blockchain) {
       storage.push(STORAGE_TYPE.BLOCKCHAIN);
     }
+    if (arweave) {
+      storage.push("ARWEAVE")
+    }
     const createThingData = {
-      user,
-      wallet,
-      mintArgs: {
-        network: "testnet",
-        nftContractId: "everything.mintspace2.testnet",
-        metadata: {
-          reference: "",
-        },
-        options: {
-          ownerId: "everything.testnet",
-          metadataId: "test",
-        },
-      },
       storage,
+      user,
       characteristics,
       files,
+      wallet,
+      ownerId: "everything.testnet",
+      nftContractId: "everything.mintspace2.testnet",
     };
     console.log(createThingData);
     const { data, error } = await createThing(createThingData);
