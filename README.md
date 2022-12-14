@@ -41,8 +41,6 @@ SDK development funded by [Mintbase Grant Program]()
 
 ## usage
 
----
-
 The methods provided in this SDK require Auth0 integration for connecting to **everything** and Mintbase integration for connected to [NEAR Protocol]().
 
 ### Setting up Auth0
@@ -76,8 +74,6 @@ Visit the corresponding documentation:
 
 ## testing
 
----
-
 ### Unit tests
 
 1. Clone the repo
@@ -106,8 +102,6 @@ A live version of the app can be used [here](https://playground.everything.dev) 
 
 ## contributing
 
----
-
 To run the project in development:
 
 1. Clone the repository
@@ -126,8 +120,6 @@ Thanks for contributing!
 <!-- LICENSE -->
 
 ## license
-
----
 
 distributed under the MIT License. see `LICENSE` for more information.
 
