@@ -1,7 +1,7 @@
-import { attributeById } from './attributeById';
-import { AttributeByIdResults } from './attributeById.types';
+import { attributeById } from './getAttributeById';
+import { AttributeByIdResults } from './getAttributeById.types';
 
-import { attributeByIdMock } from './attributeById.mock';
+import { attributeByIdMock } from './getAttributeById.mock';
 import { GraphQLClient } from 'graphql-request';
 import { GraphqlFetchingError } from '../../graphql/fetch';
 

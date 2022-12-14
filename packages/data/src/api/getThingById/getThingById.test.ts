@@ -1,13 +1,13 @@
-import { getAttributes } from './attributes';
-import { AttributesResults } from './attributes.types';
+import { thingById } from './getThingById';
+import { ThingByIdResults } from './getThingById.types';
 
+import { thingByIdMock } from './getThingById.mock';
 import { GraphQLClient } from 'graphql-request';
 import { GraphqlFetchingError } from '../../graphql/fetch';
-import { attributesMock } from './attributes.mock';
 
 jest.mock('graphql-request');
 
-describe('attributes', () => {
+describe('thingById', () => {
   afterAll(() => {
     jest.resetAllMocks();
     jest.restoreAllMocks();
@@ -17,29 +17,29 @@ describe('attributes', () => {
     jest.clearAllMocks();
   });
 
-  it('should return attributes data', async () => {
+  it('should return thing by id data', async () => {
     (GraphQLClient as jest.Mock).mockImplementationOnce(() => ({
-      request: (): Promise<AttributesResults> => Promise.resolve(attributesMock),
+      request: (): Promise<ThingByIdResults> => Promise.resolve(thingByIdMock),
     }));
 
-    const result = await getAttributes();
+    const result = await thingById('1');
 
-    expect(result?.data?.attributes.edges[0].node.id).toBe(
+    expect(result?.data?.things.edges[0].node.id).toBe(
       1
     );
   });
 
   it('should handle errors', async () => {
     jest.spyOn(console, 'error').mockImplementation(() => {
-      console.log('Suppressed console error.');
+      // console.log('Suppressed console error.');
     });
 
     const errMessage = 'exploded';
     const exploded = new GraphqlFetchingError(errMessage);
     (GraphQLClient as jest.Mock).mockImplementationOnce(() => ({
-      request: (): Promise<AttributesResults> => Promise.reject(exploded),
+      request: (): Promise<ThingByIdResults> => Promise.reject(exploded),
     }));
-    const result = await getAttributes();
+    const result = await thingById('123')
     expect(result?.error).toEqual(exploded);
   });
 });

@@ -1,13 +1,13 @@
-import { thingsByOwner } from './thingsByOwner';
-import { ThingsByOwnerResults } from './thingsByOwner.types';
+import { getAttributes } from './getAttributes';
+import { AttributesResults } from './getAttributes.types';
 
-import { thingsByOwnerMock } from './thingsByOwner.mock';
 import { GraphQLClient } from 'graphql-request';
 import { GraphqlFetchingError } from '../../graphql/fetch';
+import { attributesMock } from './getAttributes.mock';
 
 jest.mock('graphql-request');
 
-describe('thingsByOwner', () => {
+describe('attributes', () => {
   afterAll(() => {
     jest.resetAllMocks();
     jest.restoreAllMocks();
@@ -17,29 +17,29 @@ describe('thingsByOwner', () => {
     jest.clearAllMocks();
   });
 
-  it('should return things by owner data', async () => {
+  it('should return attributes data', async () => {
     (GraphQLClient as jest.Mock).mockImplementationOnce(() => ({
-      request: (): Promise<ThingsByOwnerResults> => Promise.resolve(thingsByOwnerMock),
+      request: (): Promise<AttributesResults> => Promise.resolve(attributesMock),
     }));
 
-    const result = await thingsByOwner('1');
+    const result = await getAttributes();
 
-    expect(result?.data?.things.edges[0].node.id).toBe(
+    expect(result?.data?.attributes.edges[0].node.id).toBe(
       1
     );
   });
 
   it('should handle errors', async () => {
     jest.spyOn(console, 'error').mockImplementation(() => {
-      // console.log('Suppressed console error.');
+      console.log('Suppressed console error.');
     });
 
     const errMessage = 'exploded';
     const exploded = new GraphqlFetchingError(errMessage);
     (GraphQLClient as jest.Mock).mockImplementationOnce(() => ({
-      request: (): Promise<ThingsByOwnerResults> => Promise.reject(exploded),
+      request: (): Promise<AttributesResults> => Promise.reject(exploded),
     }));
-    const result = await thingsByOwner('123');
+    const result = await getAttributes();
     expect(result?.error).toEqual(exploded);
   });
 });

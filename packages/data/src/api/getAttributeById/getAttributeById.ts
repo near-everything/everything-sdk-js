@@ -1,6 +1,6 @@
 import { fetchEverything, GraphqlFetchingError } from '../../graphql/fetch';
-import { attributeByIdQuery } from './attributeById.query';
-import { AttributeByIdResults } from './attributeById.types';
+import { attributeByIdQuery } from './getAttributeById.query';
+import { AttributeByIdResults } from './getAttributeById.types';
 
 
 interface AttributeByIdData {

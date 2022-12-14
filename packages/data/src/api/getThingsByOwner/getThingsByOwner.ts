@@ -1,6 +1,6 @@
 import { fetchEverything, GraphqlFetchingError } from '../../graphql/fetch';
-import { thingsByOwnerQuery } from './thingsByOwner.query';
-import { ThingsByOwnerResults } from './thingsByOwner.types';
+import { thingsByOwnerQuery } from './getThingsByOwner.query';
+import { ThingsByOwnerResults } from './getThingsByOwner.types';
 
 
 interface ThingsByOwnerData {
