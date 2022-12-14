@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "javascript sdk for interacting with everything",
   "scripts": {
-    "dev": "cd playgrounds/react && PORT=3050 npm run dev",
+    "dev": "lerna run watch --stream & cd playgrounds/react && PORT=3050 npm run dev",
     "build": "lerna run build --sort",
     "test": "lerna run test --stream",
     "mock:api": "graphql-faker ./faker-schema.graphql"
