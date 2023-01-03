@@ -1,7 +1,7 @@
-import { uploadFileToArweave } from "@mintbase-js/storage";
-import { MEDIA_UPLOAD_ENDPOINT, STORAGE_TYPE } from "../constants";
-import { createMediaOnBlockchain, createMediaOnCloud, uploadFilesToCloud } from "./createMedia";
+import { uploadFile } from "@mintbase-js/storage";
+import { MEDIA_UPLOAD_ENDPOINT } from "../constants";
 import { fetchEverything } from "../utils";
+import { createMediaOnBlockchain, createMediaOnCloud, uploadFilesToCloud } from "./createMedia";
 
 jest.mock('../utils');
 jest.mock("@mintbase-js/storage")
@@ -96,19 +96,19 @@ describe('createMediaOnBlockchain should', () => {
   const blockchainArgs = {
     thingId,
   };
-  test("call uploadFileToArweave for each file", async () => {
+  test("call uploadFile for each file", async () => {
     (fetchEverything as jest.Mock).mockImplementation(() => {
       return {
         data: { createMedia: { media: { id: "id" } } }
       }
     });
-    (uploadFileToArweave as jest.Mock).mockImplementation(() => {
+    (uploadFile as jest.Mock).mockImplementation(() => {
       return {
         id: "media123"
       }
     });
     const response = await createMediaOnBlockchain(files, blockchainArgs);
-    expect(uploadFileToArweave).toHaveBeenCalled();
+    expect(uploadFile).toHaveBeenCalled();
     expect(fetchEverything).toHaveBeenCalled();
     expect(response).toEqual({ urls: ["https://arweave.net/media123"] });
   });
