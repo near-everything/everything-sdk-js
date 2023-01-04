@@ -5,12 +5,8 @@ export const thingByIdQuery = gql`
     thing(id: $thingId) {
       id
       characteristics {
-        edges {
-          node {
-            attributeId
-            optionId
-          }
-        }
+        attributeId
+        optionId
       }
       nft {
         nft_contract_id
@@ -20,12 +16,8 @@ export const thingByIdQuery = gql`
         }
       }
       tags {
-        edges {
-          node {
-            media {
-              mediaUrl
-            }
-          }
+        media {
+          mediaUrl
         }
       }
     }

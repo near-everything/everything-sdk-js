@@ -1,18 +1,20 @@
-import { listingsQuery } from "@everything-sdk-js/data";
+import { listingsByListerQuery } from "@everything-sdk-js/data";
 import { fetchEverything } from "@everything-sdk-js/sdk";
+import { useWallet } from "@mintbase-js/react";
 import { useState } from "react";
 import ThingCard from "./ThingCard";
 
-function EverythingMarket() {
+function PersonalMarket() {
   const [things, setThings] = useState([]);
+  const { activeAccountId } = useWallet();
 
-  const fetchEverythingMarketListings = async () => {
+  const fetchPersonalMarketListings = async () => {
     const tokens = await fetchEverything({
-      query: listingsQuery,
-      variables: null,
+      query: listingsByListerQuery,
+      variables: { listerId: activeAccountId },
     });
     if (!tokens.error) {
-      setThings(tokens.data.listings);
+      setThings(tokens.data.listingsByLister);
     } else {
       console.log(tokens.error);
     }
@@ -20,8 +22,8 @@ function EverythingMarket() {
 
   return (
     <>
-      <button className="btn" onClick={fetchEverythingMarketListings}>
-        fetch everything market listings
+      <button className="btn" onClick={fetchPersonalMarketListings}>
+        fetch personal market listings
       </button>
       <div className="grid grid-cols-4 mt-4 gap-1">
         {things.map((it) => (
@@ -33,4 +35,4 @@ function EverythingMarket() {
   );
 }
 
-export default EverythingMarket;
+export default PersonalMarket;

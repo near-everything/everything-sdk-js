@@ -4,6 +4,7 @@ import Head from "next/head";
 import Box from "../../components/Box";
 import Layout from "../../components/Layout";
 import EverythingMarket from "../../components/Transact/EverythingMarket";
+import PersonalMarket from "../../components/Transact/PersonalMarket";
 import PersonalWallet from "../../components/Transact/PersonalWallet";
 
 export default function Transact() {
@@ -50,11 +51,7 @@ export default function Transact() {
             </div>
             <div className="flex flex-col gap-2">
               <Box>
-                <p>shows all your personal, listed items</p>
-                <p>
-                  will give you the opportunity to delist, change price, burn,
-                  or transfer
-                </p>
+                <PersonalMarket />
               </Box>
               <Box>
                 <p>will have a dropdown to select a marketplace</p>

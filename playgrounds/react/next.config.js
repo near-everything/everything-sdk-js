@@ -8,7 +8,7 @@ const nextConfig = {
     return config;
   },
   images: {
-    domains: ["everything-1.s3.us-east-1.amazonaws.com", "localhost", "placeimg.com"],
+    domains: ["everything-1.s3.us-east-1.amazonaws.com", "localhost", "placeimg.com", "arweave.net"],
   },
 };
 

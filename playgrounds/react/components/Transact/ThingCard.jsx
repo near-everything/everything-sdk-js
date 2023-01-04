@@ -11,22 +11,22 @@ function ThingCard({ thing }) {
   const handleListThing = async () => {
     const wallet = await selector.wallet();
     const args = {
-      nftContractId: thing.node.nft.nft_contract_id,
+      nftContractId: thing.nft.nft_contract_id,
       price: "100",
-      tokenId: thing.node.nft.token_id,
+      tokenId: thing.nft.token_id,
       marketId: "market-v2-beta.mintspace2.testnet",
     };
-    await execute(list(args), { wallet: wallet });
+    await execute({ wallet: wallet }, list(args));
   };
 
   const handleDelistThing = async () => {
     const wallet = await selector.wallet();
     const args = {
-      nftContractId: thing.node.nft.nft_contract_id,
-      tokenId: thing.node.nft.token_id,
+      nftContractId: thing.nft.nft_contract_id,
+      tokenIds: [thing.nft.token_id],
       marketId: "market-v2-beta.mintspace2.testnet",
     };
-    await execute(delist(args), { wallet: wallet });
+    await execute({ wallet: wallet }, delist(args));
   };
 
   const handleMintThing = async () => {
@@ -36,12 +36,14 @@ function ThingCard({ thing }) {
       ownerId: activeAccountId,
       nftContractId: "everything.mintspace2.testnet",
     };
-    await mintThing(thing.node.id, mintThingData);
+    await mintThing(thing.id, mintThingData);
   };
 
   const getImage = () => {
-    if (thing.node.tags?.edges?.length > 0) {
-      return thing.node.tags.edges[0].node.media.mediaUrl;
+    if (thing.tags?.length > 0) {
+      return thing.tags[0].media.mediaUrl;
+    } else if (thing.thing?.tags?.length > 0) {
+      return thing.thing.tags[0].media.mediaUrl;
     } else {
       return "https://placeimg.com/400/225/arch";
     }
@@ -54,9 +56,9 @@ function ThingCard({ thing }) {
           {showOptions ? (
             <div className="flex flex-col justify-between h-full p-2">
               <div className="flex flex-col flex-1">
-                {thing?.node?.nft ? (
+                {thing?.nft ? (
                   <>
-                    {thing?.node?.nft?.listings?.length > 0 ? (
+                    {thing?.nft?.listings?.length > 0 ? (
                       <button
                         className="btn btn-secondary"
                         onClick={handleDelistThing}

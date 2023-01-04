@@ -9,7 +9,7 @@ function PersonalWallet() {
 
   const fetchPersonalThings = async () => {
     const tokens = await getThingsByOwner(user.sub);
-    setThings(tokens?.data?.things?.edges);
+    setThings(tokens?.data?.things);
   };
 
   return (
@@ -23,9 +23,9 @@ function PersonalWallet() {
           >
             fetch personal things
           </button>
-          <div className="grid grid-cols-4 mt-4">
+          <div className="grid grid-cols-4 mt-4 gap-1">
             {things?.map((it) => (
-              <div key={it.node.id}>
+              <div key={it.id}>
                 <ThingCard thing={it} />
               </div>
             ))}
