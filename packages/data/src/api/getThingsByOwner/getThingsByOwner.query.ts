@@ -14,6 +14,22 @@ export const thingsByOwnerQuery = gql`
               }
             }
           }
+          nft {
+            nft_contract_id
+            token_id
+            listings {
+              price
+            }
+          }
+          tags {
+            edges {
+              node {
+                media {
+                  mediaUrl
+                }
+              }
+            }
+          }
         }
       }
     }
