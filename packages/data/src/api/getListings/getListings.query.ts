@@ -5,6 +5,8 @@ export const listingsQuery = gql`
     listings {
       price
       metadata_id
+      nft_contract_id
+      token_id
       listed_by
       thing {
         id

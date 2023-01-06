@@ -16,7 +16,7 @@ export type CreateThingBlockchainArgs = {
  * @param args {@link CreateThingBlockchainArgs}
  * @returns a result for single transactions of {@link FinalExecutionOutcome}
  */
-export async function mintThing(thingId: string, args: CreateThingBlockchainArgs): Promise<void | FinalExecutionOutcome> {
+export async function mintThing(thingId: string, args: CreateThingBlockchainArgs): Promise<void | FinalExecutionOutcome | FinalExecutionOutcome[]> {
   if (!isUuid(thingId)) {
     throw new Error(NOT_VALID_UUID);
   }
@@ -39,5 +39,5 @@ export async function mintThing(thingId: string, args: CreateThingBlockchainArgs
   }
 
   // create reference on blockchain
-  return execute(mint(mintArgs), { wallet: args.wallet });
+  return execute({ wallet: args.wallet }, mint(mintArgs));
 }

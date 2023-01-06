@@ -1,19 +1,31 @@
+import { useUser } from "@auth0/nextjs-auth0/client";
+import { buyThing, mintThing } from "@everything-sdk-js/sdk";
 import { useWallet } from "@mintbase-js/react";
 import { delist, execute, list } from "@mintbase-js/sdk";
-import { mintThing } from "@everything-sdk-js/sdk";
 import Image from "next/image";
 import { useState } from "react";
 
-function ThingCard({ thing, showOwnerActions, showMint, showDelist }) {
+function ThingCard({
+  thing,
+  thingId,
+  tags,
+  showOwnerActions,
+  showMint,
+  showDelist,
+  contractId,
+  tokenId,
+  referrerId,
+}) {
   const { selector, activeAccountId } = useWallet();
   const [showOptions, setShowOptions] = useState(false);
+  const { user } = useUser();
 
   const handleListThing = async () => {
     const wallet = await selector.wallet();
     const args = {
-      nftContractId: thing.nft.nft_contract_id,
+      nftContractId: contractId,
       price: "100",
-      tokenId: thing.nft.token_id,
+      tokenId: tokenId,
       marketId: "market-v2-beta.mintspace2.testnet",
     };
     await execute({ wallet: wallet }, list(args));
@@ -22,8 +34,8 @@ function ThingCard({ thing, showOwnerActions, showMint, showDelist }) {
   const handleDelistThing = async () => {
     const wallet = await selector.wallet();
     const args = {
-      nftContractId: thing.nft.nft_contract_id,
-      tokenIds: [thing.nft.token_id],
+      nftContractId: contractId,
+      tokenIds: [tokenId],
       marketId: "market-v2-beta.mintspace2.testnet",
     };
     await execute({ wallet: wallet }, delist(args));
@@ -31,21 +43,31 @@ function ThingCard({ thing, showOwnerActions, showMint, showDelist }) {
 
   const handleMintThing = async () => {
     const wallet = await selector.wallet();
-    const mintThingData = {
+    const args = {
       wallet,
       ownerId: activeAccountId,
       nftContractId: "everything.mintspace2.testnet",
     };
-    await mintThing(thing.id, mintThingData);
+    await mintThing(thing.id, args);
   };
 
-  const handleBuyThing = async () => {};
+  const handleBuyThing = async () => {
+    const wallet = await selector.wallet();
+    const args = {
+      thingId,
+      user,
+      price: "100",
+      contractId,
+      tokenId,
+      referrerId,
+      wallet
+    };
+    await buyThing(args);
+  };
 
   const getImage = () => {
-    if (thing.tags?.length > 0) {
-      return thing.tags[0].media.mediaUrl;
-    } else if (thing.thing?.tags?.length > 0) {
-      return thing.thing.tags[0].media.mediaUrl;
+    if (tags?.length > 0) {
+      return tags[0].media.mediaUrl;
     } else {
       return "https://placeimg.com/400/225/arch";
     }

@@ -3,8 +3,24 @@ import { fetchEverything } from "@everything-sdk-js/sdk";
 import { useWallet } from "@mintbase-js/react";
 import { useQuery } from "@tanstack/react-query";
 import ThingCard from "./ThingCard";
+import SingleSelect from "../SingleSelect";
+import { useState } from "react";
 
-function EverythingMarket() {
+const marketOptions = [
+  {
+    label: "OnlyPants",
+    value: 1,
+    description: "a market exclusive to pants available in the ecosystem",
+  },
+  {
+    label: "The Shirt",
+    value: 2,
+    description: "a market exclusive to shirts available in the ecosystem",
+  },
+];
+
+function EcosystemMarket() {
+  const [market, setMarket] = useState(marketOptions[0]);
   const { activeAccountId } = useWallet();
   const { data, isLoading } = useQuery(["listings"], async () => {
     const { data, error } = await fetchEverything({
@@ -19,7 +35,20 @@ function EverythingMarket() {
 
   return (
     <div className="flex flex-col">
-      <p className="text-2xl ml-2">everything market</p>
+      <div className="">
+        <div className="w-56">
+          <SingleSelect
+            className="basic-single"
+            classNamePrefix="select"
+            value={market}
+            isLoading={isLoading}
+            name="market"
+            onChange={setMarket}
+            options={marketOptions}
+          />
+        </div>
+        <p className="ml-2">{market.description}</p>
+      </div>
       {isLoading ? (
         <p>Loading</p>
       ) : (
@@ -45,4 +74,4 @@ function EverythingMarket() {
   );
 }
 
-export default EverythingMarket;
+export default EcosystemMarket;

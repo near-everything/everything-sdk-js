@@ -5,6 +5,8 @@ export const listingsByListerQuery = gql`
     activeListingsByLister(listerId: $listerId) {
       price
       metadata_id
+      nft_contract_id
+      token_id
       thing {
         id
         tags {

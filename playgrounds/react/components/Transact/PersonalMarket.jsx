@@ -1,37 +1,52 @@
 import { listingsByListerQuery } from "@everything-sdk-js/data";
 import { fetchEverything } from "@everything-sdk-js/sdk";
 import { useWallet } from "@mintbase-js/react";
-import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import ThingCard from "./ThingCard";
 
 function PersonalMarket() {
-  const [things, setThings] = useState([]);
   const { activeAccountId } = useWallet();
-
-  const fetchPersonalMarketListings = async () => {
-    const tokens = await fetchEverything({
-      query: listingsByListerQuery,
-      variables: { listerId: activeAccountId },
-    });
-    if (!tokens.error) {
-      setThings(tokens.data.activeListingsByLister);
-    } else {
-      console.log(tokens.error);
+  const { data, isLoading } = useQuery(
+    ["listingsByLister", activeAccountId],
+    async () => {
+      const { data, error } = await fetchEverything({
+        query: listingsByListerQuery,
+        variables: { listerId: activeAccountId },
+      });
+      if (!error) {
+        return data.activeListingsByLister;
+      } else {
+        console.log(error);
+      }
+    },
+    {
+      enabled: !!activeAccountId
     }
-  };
+  );
 
   return (
-    <>
-      <button className="btn" onClick={fetchPersonalMarketListings}>
-        fetch personal market listings
-      </button>
-      <div className="grid grid-cols-4 mt-4 gap-1">
-        {things.map((it) => (
-          // have it pass props individually rather than full thing
-          <ThingCard key={it.metadata_id} thing={it} showOwnerActions={true} showMint={false} showDelist={true} />
-        ))}
-      </div>
-    </>
+    <div className="flex flex-col">
+      <p className="text-2xl ml-2">personal market</p>
+      {isLoading ? (
+        <p>Loading</p>
+      ) : (
+        <div className="grid grid-cols-4 mt-4 gap-1">
+          {data?.map((it) => (
+            <ThingCard
+              key={it.metadata_id}
+              thing={it}
+              thingId={it.thing.id}
+              tags={it.thing.tags}
+              showOwnerActions={true}
+              showMint={false}
+              showDelist={true}
+              contractId={it.nft_contract_id}
+              tokenId={it.token_id}
+            />
+          ))}
+        </div>
+      )}
+    </div>
   );
 }
 
