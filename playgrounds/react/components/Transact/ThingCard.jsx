@@ -4,7 +4,7 @@ import { mintThing } from "@everything-sdk-js/sdk";
 import Image from "next/image";
 import { useState } from "react";
 
-function ThingCard({ thing }) {
+function ThingCard({ thing, showOwnerActions, showMint, showDelist }) {
   const { selector, activeAccountId } = useWallet();
   const [showOptions, setShowOptions] = useState(false);
 
@@ -39,6 +39,8 @@ function ThingCard({ thing }) {
     await mintThing(thing.id, mintThingData);
   };
 
+  const handleBuyThing = async () => {};
+
   const getImage = () => {
     if (thing.tags?.length > 0) {
       return thing.tags[0].media.mediaUrl;
@@ -55,31 +57,43 @@ function ThingCard({ thing }) {
         <div className="relative w-56 h-56">
           {showOptions ? (
             <div className="flex flex-col justify-between h-full p-2">
-              <div className="flex flex-col flex-1">
-                {thing?.nft ? (
-                  <>
-                    {thing?.nft?.listings?.length > 0 ? (
-                      <button
-                        className="btn btn-secondary"
-                        onClick={handleDelistThing}
-                      >
-                        Delist
-                      </button>
-                    ) : (
-                      <button
-                        className="btn btn-secondary"
-                        onClick={handleListThing}
-                      >
-                        List
-                      </button>
-                    )}
-                  </>
-                ) : (
-                  <button className="btn btn-primary" onClick={handleMintThing}>
-                    Mint
+              {showOwnerActions ? (
+                <div className="flex flex-col flex-1">
+                  {showMint ? (
+                    <button
+                      className="btn btn-primary"
+                      onClick={handleMintThing}
+                    >
+                      Mint
+                    </button>
+                  ) : (
+                    <>
+                      {showDelist ? (
+                        <button
+                          className="btn btn-secondary"
+                          onClick={handleDelistThing}
+                        >
+                          Delist
+                        </button>
+                      ) : (
+                        <button
+                          className="btn btn-secondary"
+                          onClick={handleListThing}
+                        >
+                          List
+                        </button>
+                      )}
+                    </>
+                  )}
+                </div>
+              ) : (
+                <div className="flex flex-col flex-1">
+                  <button className="btn btn-primary" onClick={handleBuyThing}>
+                    Buy
                   </button>
-                )}
-              </div>
+                </div>
+              )}
+
               <button
                 className="btn btn-accent"
                 onClick={() => setShowOptions(!showOptions)}

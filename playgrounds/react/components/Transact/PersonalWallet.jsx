@@ -26,7 +26,7 @@ function PersonalWallet() {
           <div className="grid grid-cols-4 mt-4 gap-1">
             {things?.map((it) => (
               <div key={it.id}>
-                <ThingCard thing={it} />
+                <ThingCard thing={it} showMint={!it.nft} showOwnerActions={true} showDelist={it.nft && it.nft.listings?.length > 0 && it.nft.listings[0].unlisted_at === null} />
               </div>
             ))}
           </div>

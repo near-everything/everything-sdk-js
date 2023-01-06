@@ -53,7 +53,7 @@ export default function Transact() {
               <Box>
                 <PersonalMarket />
               </Box>
-              <Box>
+              {/* <Box>
                 <p>will have a dropdown to select a marketplace</p>
                 <p>type = clothing</p>
                 <p>brand = sample</p>
@@ -62,7 +62,7 @@ export default function Transact() {
                   will give you the opportunity to delist, change price, burn,
                   or transfer
                 </p>
-              </Box>
+              </Box> */}
               <Box>
                 <EverythingMarket />
               </Box>

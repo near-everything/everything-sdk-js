@@ -14,7 +14,7 @@ function PersonalMarket() {
       variables: { listerId: activeAccountId },
     });
     if (!tokens.error) {
-      setThings(tokens.data.listingsByLister);
+      setThings(tokens.data.activeListingsByLister);
     } else {
       console.log(tokens.error);
     }
@@ -28,7 +28,7 @@ function PersonalMarket() {
       <div className="grid grid-cols-4 mt-4 gap-1">
         {things.map((it) => (
           // have it pass props individually rather than full thing
-          <ThingCard key={it.metadata_id} thing={it} />
+          <ThingCard key={it.metadata_id} thing={it} showOwnerActions={true} showMint={false} showDelist={true} />
         ))}
       </div>
     </>

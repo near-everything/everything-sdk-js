@@ -5,6 +5,7 @@ export const listingsQuery = gql`
     listings {
       price
       metadata_id
+      listed_by
       thing {
         id
         tags {

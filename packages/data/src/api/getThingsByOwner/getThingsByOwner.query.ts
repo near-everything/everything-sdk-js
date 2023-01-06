@@ -17,6 +17,7 @@ export const thingsByOwnerQuery = gql`
         token_id
         listings {
           price
+          unlisted_at
         }
       }
       tags {
