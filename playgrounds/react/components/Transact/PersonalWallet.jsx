@@ -22,9 +22,13 @@ function PersonalWallet() {
 
   return (
     <div className="flex flex-col">
-      <p className="text-2xl ml-2">personal inventory</p>
+      <div className="flex justify-between">
+        <p className="text-2xl ml-2">personal inventory</p>
+        <label htmlFor="create-modal" className="btn">
+          create thing
+        </label>
+      </div>
       <AuthBar />
-      <label htmlFor="create-modal" className="btn">create</label>
 
       {isLoading ? (
         <p>Loading</p>
