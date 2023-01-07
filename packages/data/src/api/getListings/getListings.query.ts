@@ -15,6 +15,16 @@ export const listingsQuery = gql`
             mediaUrl
           }
         }
+        characteristics {
+          nodes {
+            attribute {
+              name
+            }
+            option {
+              value
+            }
+          }
+        }
       }
     }
   }

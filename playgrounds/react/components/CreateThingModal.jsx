@@ -4,6 +4,7 @@ import {
   createThing,
   STORAGE_TYPE
 } from "@everything-sdk-js/sdk";
+import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { PulseLoader } from "react-spinners";
 import Media from "./Playground/CreateMedia/Media";
@@ -14,6 +15,7 @@ function CreateThingModal() {
   const [loading, setLoading] = useState(false);
   const [attributes, setAttributes] = useState([]);
   const { user } = useUser();
+  const queryClient = useQueryClient();
 
   const mapAttributes = () => {
     return attributes
@@ -47,6 +49,7 @@ function CreateThingModal() {
     } catch (err) {
       console.log(err.message);
     }
+    await queryClient.refetchQueries(["thingsByOwner", user.sub]);
     document.getElementById("create-modal").checked = false;
     setLoading(false);
   };

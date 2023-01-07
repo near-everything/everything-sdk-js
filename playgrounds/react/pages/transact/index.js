@@ -1,5 +1,3 @@
-import { useWallet } from "@mintbase-js/react";
-import { depositStorage, execute } from "@mintbase-js/sdk";
 import Head from "next/head";
 import Box from "../../components/Box";
 import Layout from "../../components/Layout";
@@ -9,20 +7,6 @@ import PersonalMarket from "../../components/Transact/PersonalMarket";
 import PersonalWallet from "../../components/Transact/PersonalWallet";
 
 export default function Transact() {
-  const { selector } = useWallet();
-
-  const handleDepositStorage = async () => {
-    const wallet = await selector.wallet();
-
-    await execute(
-      depositStorage({
-        listAmount: 10,
-        marketId: "market-v2-beta.mintspace2.testnet",
-      }),
-      { wallet }
-    );
-  };
-
   return (
     <>
       <Head>

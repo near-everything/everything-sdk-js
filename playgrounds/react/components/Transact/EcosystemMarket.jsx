@@ -6,16 +6,51 @@ import ThingCard from "./ThingCard";
 import SingleSelect from "../SingleSelect";
 import { useState } from "react";
 
+const filterPants = (data) => {
+  return data?.filter(element => {
+    const characteristic = element.thing.characteristics.nodes.find(node => {
+      return node.attribute.name === "Type" && node.option.value === "Pants";
+    });
+    return characteristic !== undefined;
+  });
+}
+
+const filterShirts = (data) => {
+  return data?.filter(element => {
+    const characteristic = element.thing.characteristics.nodes.find(node => {
+      return node.attribute.name === "Type" && node.option.value === "T-Shirt";
+    });
+    return characteristic !== undefined;
+  });
+}
+
+const filterJCrew = (data) => {
+  return data?.filter(element => {
+    const characteristic = element.thing.characteristics.nodes.find(node => {
+      return node.attribute.name === "Brand" && node.option.value === "J.Crew";
+    });
+    return characteristic !== undefined;
+  });
+}
+
 const marketOptions = [
   {
     label: "OnlyPants",
     value: 1,
     description: "a market exclusive to pants available in the ecosystem",
+    filterFn: filterPants
   },
   {
     label: "The Shirt",
     value: 2,
     description: "a market exclusive to shirts available in the ecosystem",
+    filterFn: filterShirts
+  },
+  {
+    label: "J.Crew Resale",
+    value: 2,
+    description: "J.Crew's own resale market, capturing any uploaded things that hold their branding",
+    filterFn: filterJCrew
   },
 ];
 
@@ -53,7 +88,7 @@ function EcosystemMarket() {
         <p>Loading</p>
       ) : (
         <div className="grid grid-cols-4 mt-4 gap-1">
-          {data?.map((it) => (
+          {market.filterFn(data)?.map((it) => (
             // have it pass props individually rather than full thing
             <ThingCard
               key={it.metadata_id}

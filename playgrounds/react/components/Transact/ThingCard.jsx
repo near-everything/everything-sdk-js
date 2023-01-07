@@ -1,8 +1,7 @@
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { buyThing, mintThing } from "@everything-sdk-js/sdk";
 import { useWallet } from "@mintbase-js/react";
-import { delist, execute, list } from "@mintbase-js/sdk";
-import Image from "next/image";
+import { delist, execute } from "@mintbase-js/sdk";
 import { useState } from "react";
 
 function ThingCard({
@@ -15,21 +14,11 @@ function ThingCard({
   contractId,
   tokenId,
   referrerId,
+  setListing,
 }) {
   const { selector, activeAccountId } = useWallet();
   const [showOptions, setShowOptions] = useState(false);
   const { user } = useUser();
-
-  const handleListThing = async () => {
-    const wallet = await selector.wallet();
-    const args = {
-      nftContractId: contractId,
-      price: "100",
-      tokenId: tokenId,
-      marketId: "market-v2-beta.mintspace2.testnet",
-    };
-    await execute({ wallet: wallet }, list(args));
-  };
 
   const handleDelistThing = async () => {
     const wallet = await selector.wallet();
@@ -60,14 +49,17 @@ function ThingCard({
       contractId,
       tokenId,
       referrerId,
-      wallet
+      wallet,
     };
     await buyThing(args);
   };
 
   const getImage = () => {
     if (tags?.length > 0) {
-      return tags[0].media.mediaUrl;
+      return tags[0].media.mediaUrl.replace(
+        "https://everything-1.s3.us-east-1.amazonaws.com",
+        "https://everything.b-cdn.net"
+      );
     } else {
       return "https://placeimg.com/400/225/arch";
     }
@@ -98,12 +90,18 @@ function ThingCard({
                           Delist
                         </button>
                       ) : (
-                        <button
-                          className="btn btn-secondary"
-                          onClick={handleListThing}
+                        <label
+                          htmlFor="list-modal"
+                          className="btn"
+                          onClick={() =>
+                            setListing({
+                              nftContractId: contractId,
+                              tokenId: tokenId,
+                            })
+                          }
                         >
                           List
-                        </button>
+                        </label>
                       )}
                     </>
                   )}
@@ -115,7 +113,6 @@ function ThingCard({
                   </button>
                 </div>
               )}
-
               <button
                 className="btn btn-accent"
                 onClick={() => setShowOptions(!showOptions)}
@@ -125,14 +122,13 @@ function ThingCard({
             </div>
           ) : (
             <div
-              className="cursor-pointer hover:opacity-75"
+              className="relative w-full h-full cursor-pointer hover:opacity-75 "
               onClick={() => setShowOptions(!showOptions)}
             >
-              <Image
+              <img
                 src={getImage()}
                 alt=""
-                fill
-                style={{ objectFit: "cover" }}
+                style={{ height: "100%", width: "100%", objectFit: "cover" }}
                 className="rounded-xl"
               />
             </div>
