@@ -29,8 +29,8 @@ function EverythingMarket() {
             <ThingCard
               key={it.metadata_id}
               thing={it}
-              thingId={it.thing.id}
-              tags={it.thing.tags}
+              thingId={it.thing?.id}
+              tags={it.thing?.tags}
               showOwnerActions={it.listed_by === activeAccountId}
               showMint={false}
               showDelist={true}
