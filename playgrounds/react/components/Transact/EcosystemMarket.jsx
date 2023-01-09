@@ -8,7 +8,7 @@ import { useState } from "react";
 
 const filterPants = (data) => {
   return data?.filter(element => {
-    const characteristic = element.thing.characteristics.nodes.find(node => {
+    const characteristic = element.thing?.characteristics.nodes.find(node => {
       return node.attribute.name === "Type" && node.option.value === "Pants";
     });
     return characteristic !== undefined;
@@ -17,7 +17,7 @@ const filterPants = (data) => {
 
 const filterShirts = (data) => {
   return data?.filter(element => {
-    const characteristic = element.thing.characteristics.nodes.find(node => {
+    const characteristic = element.thing?.characteristics.nodes.find(node => {
       return node.attribute.name === "Type" && node.option.value === "T-Shirt";
     });
     return characteristic !== undefined;
@@ -26,7 +26,7 @@ const filterShirts = (data) => {
 
 const filterJCrew = (data) => {
   return data?.filter(element => {
-    const characteristic = element.thing.characteristics.nodes.find(node => {
+    const characteristic = element.thing?.characteristics.nodes.find(node => {
       return node.attribute.name === "Brand" && node.option.value === "J.Crew";
     });
     return characteristic !== undefined;
