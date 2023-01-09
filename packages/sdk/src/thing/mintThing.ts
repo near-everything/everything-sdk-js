@@ -1,6 +1,5 @@
 import { execute, mint, MintArgs } from "@mintbase-js/sdk";
 import { AccountId } from "@mintbase-js/sdk/lib/v1";
-import { uploadFileToArweave } from "@mintbase-js/storage";
 import { FinalExecutionOutcome, Wallet } from "@near-wallet-selector/core";
 import { isUuid } from "uuidv4";
 import { NOT_VALID_UUID } from "../constants";
@@ -17,25 +16,28 @@ export type CreateThingBlockchainArgs = {
  * @param args {@link CreateThingBlockchainArgs}
  * @returns a result for single transactions of {@link FinalExecutionOutcome}
  */
-export async function mintThing(thingId: string, args: CreateThingBlockchainArgs): Promise<void | FinalExecutionOutcome> {
+export async function mintThing(thingId: string, args: CreateThingBlockchainArgs): Promise<void | FinalExecutionOutcome | FinalExecutionOutcome[]> {
   if (!isUuid(thingId)) {
     throw new Error(NOT_VALID_UUID);
   }
 
-  // TODO: confirm not duplicate on chain, query indexer for this id (mesh)
+  // NOTE: the below code works, but I don't know why I want my reference to be anything more than the thing id (yet)  
 
-  const metadata = Buffer.from(JSON.stringify({
-    extra: thingId
-  }));
-  const response = await uploadFileToArweave(metadata, thingId);
-  const url = `https://arweave.net/${response.id}`;
+  // const metadata = JSON.stringify({
+  //   extra: thingId
+  // });
+  // const file = new File([metadata], `${thingId}.json`, {
+  //   type: "application/json"
+  // });
+  // const response = await uploadFile(file);
+  // const url = `https://arweave.net/${response.id}`;
 
   const mintArgs: MintArgs = {
     nftContractId: args.nftContractId,
-    reference: url,
+    reference: thingId,
     ownerId: args.ownerId,
   }
 
   // create reference on blockchain
-  return execute(mint(mintArgs), { wallet: args.wallet });
+  return execute({ wallet: args.wallet }, mint(mintArgs));
 }

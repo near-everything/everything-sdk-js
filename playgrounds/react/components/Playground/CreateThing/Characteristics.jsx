@@ -91,7 +91,7 @@ function Characteristics({ attributes, setAttributes }) {
         <>Loading...</>
       ) : (
         <div className="flex flex-col w-full">
-          <p className="font-semibold mb-2">select attributes for template</p>
+          <p className="font-semibold mb-2">select attributes</p>
           <CreatableSelect
             id="attribute_select"
             instanceId="attribute_select"

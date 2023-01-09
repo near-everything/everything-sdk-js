@@ -1,5 +1,5 @@
 import { fetchEverything, GraphqlFetchingError } from '../../graphql/fetch';
-import { thingByIdQuery } from './geThingById.query';
+import { thingByIdQuery } from './getThingById.query';
 import { ThingByIdResults } from './getThingById.types';
 
 

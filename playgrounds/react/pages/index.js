@@ -88,7 +88,7 @@ export default function Home() {
           </div>
         </div>
         <br />
-        <div className="flex grid-cols-2 gap-4 w-3/4 justify-center">
+        <div className="flex flex-col sm:flex-row grid-cols-3 gap-4 w-3/4 justify-center">
           <div className="card flex-1 bg-base-100 shadow-xl">
             <Link href="/playground">
               <div className="card-body">
@@ -102,6 +102,14 @@ export default function Home() {
               <div className="card-body">
                 <h2 className="card-title">explore &rarr;</h2>
                 <p>use the query tool to fetch data</p>
+              </div>
+            </Link>
+          </div>
+          <div className="card flex-1 bg-base-100 shadow-xl">
+            <Link href="/transact">
+              <div className="card-body">
+                <h2 className="card-title">transact &rarr;</h2>
+                <p>test a sample marketplace</p>
               </div>
             </Link>
           </div>

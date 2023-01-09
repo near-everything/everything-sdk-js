@@ -1,4 +1,4 @@
-import { uploadFileToArweave } from "@mintbase-js/storage";
+import { uploadFile } from "@mintbase-js/storage";
 import { MEDIA_UPLOAD_ENDPOINT } from "../constants";
 import { fetchEverything } from "../utils";
 import { createMediaMutation } from "./createMedia.mutation";
@@ -85,7 +85,7 @@ export async function createMediaOnBlockchain(files: File[], args: CreateMediaBl
   
   // upload each file individually to arweave via Mintbase SDK
   for (let i = 0; i < files.length; i++) {
-    const response = await uploadFileToArweave(files[i], `${new Date().toISOString()}`); //  + '-' + files[i].originalname
+    const response = await uploadFile(files[i]); //  + '-' + files[i].originalname
     // construct url
     const url = `https://arweave.net/${response.id}`;
     // prepare url for response
