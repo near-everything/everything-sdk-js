@@ -5,7 +5,8 @@ const nextConfig = {
   env: {
     MINTBASE_API_KEY: process.env.MINTBASE_API_KEY,
     NEAR_NETWORK: process.env.NEAR_NETWORK,
-    NEAR_DATA_ENV: process.env.NEAR_DATA_ENV
+    NEAR_DATA_ENV: process.env.NEAR_DATA_ENV,
+    EVERYTHING_API: process.env.EVERYTHING_API
   },
   webpack: (config) =>{
     config.resolve.fallback = { fs: false };

@@ -5,7 +5,7 @@ export const STORAGE_TYPE = {
 }
 
 export const GRAPHQL_ENDPOINT = "/api/graphql";
-export const MEDIA_UPLOAD_ENDPOINT = "http://localhost:4050/api/file/upload";
+export const MEDIA_UPLOAD_ENDPOINT = `${process.env.EVERYTHING_API}/api/file/upload`;
 
 
 
