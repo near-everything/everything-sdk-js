@@ -1,5 +1,6 @@
 import { useUser } from "@auth0/nextjs-auth0/client";
 import {
+  createMediaOnBlockchain,
   createMediaOnCloud,
   createThing,
   STORAGE_TYPE
@@ -34,18 +35,18 @@ function CreateThingModal() {
     setLoading(true);
     const characteristics = mapAttributes();
     const createThingData = {
-      storage: [STORAGE_TYPE.BLOCKCHAIN],
+      storage: [STORAGE_TYPE.CLOUD],
       user,
       characteristics,
     };
     try {
       const { thingId } = await createThing(createThingData);
       const createMediaData = {
-        user,
+        // user,
         thingId: thingId,
       };
       const media = files.map((it) => (it = it.data));
-      await createMediaOnCloud(media, createMediaData);
+      await createMediaOnBlockchain(media, createMediaData);
     } catch (err) {
       console.log(err.message);
     }
