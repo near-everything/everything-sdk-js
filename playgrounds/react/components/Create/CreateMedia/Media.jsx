@@ -1,24 +1,21 @@
-import { useState } from "react";
-import Camera from "./Camera";
 import MediaReel from "./MediaReel";
-import ToggleShowCameraButton from "./ToggleShowCameraButton";
 
 function Media({ files, setFiles }) {
-  const [showCamera, toggleShowCamera] = useState(false);
+  // const [showCamera, toggleShowCamera] = useState(false);
   return (
     <div id="media-container">
-      {showCamera ? (
+      {/* {showCamera ? (
         <Camera
           images={files}
           setImages={setFiles}
           hideCamera={() => toggleShowCamera(false)}
         />
       ) : (
-        <>
-          <MediaReel images={files} setImages={setFiles} />
-        </>
+        <> */}
+      <MediaReel images={files} setImages={setFiles} />
+      {/* </>
       )}
-      <ToggleShowCameraButton toggleShowCamera={() => toggleShowCamera(!showCamera)} showCamera={showCamera} />
+      <ToggleShowCameraButton toggleShowCamera={() => toggleShowCamera(!showCamera)} showCamera={showCamera} /> */}
     </div>
   );
 }
