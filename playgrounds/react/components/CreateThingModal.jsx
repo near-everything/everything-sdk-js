@@ -34,7 +34,7 @@ function CreateThingModal() {
     setLoading(true);
     const characteristics = mapAttributes();
     const createThingData = {
-      storage: [STORAGE_TYPE.CLOUD],
+      storage: [STORAGE_TYPE.BLOCKCHAIN],
       user,
       characteristics,
     };
