@@ -1,9 +1,8 @@
 import { useUser } from "@auth0/nextjs-auth0/client";
 import {
   createMediaOnBlockchain,
-  createMediaOnCloud,
   createThing,
-  STORAGE_TYPE
+  STORAGE_TYPE,
 } from "@everything-sdk-js/sdk";
 import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
