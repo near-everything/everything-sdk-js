@@ -5,8 +5,10 @@ export const thingsQuery = gql`
     things {
       id
       characteristics {
-        attributeId
-        optionId
+        nodes {
+          attributeId
+          optionId
+        }
       }
       nft {
         nft_contract_id

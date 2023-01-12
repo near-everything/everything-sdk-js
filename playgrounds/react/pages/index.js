@@ -90,9 +90,9 @@ export default function Home() {
         <br />
         <div className="flex flex-col sm:flex-row grid-cols-3 gap-4 w-3/4 justify-center">
           <div className="card flex-1 bg-base-100 shadow-xl">
-            <Link href="/playground">
+            <Link href="/create">
               <div className="card-body">
-                <h2 className="card-title">playground &rarr;</h2>
+                <h2 className="card-title">create &rarr;</h2>
                 <p>create things and media</p>
               </div>
             </Link>

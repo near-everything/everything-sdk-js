@@ -7,8 +7,8 @@ import {
 import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { PulseLoader } from "react-spinners";
-import Media from "./Playground/CreateMedia/Media";
-import Characteristics from "./Playground/CreateThing/Characteristics";
+import Media from "./Create/CreateMedia/Media";
+import Characteristics from "./Create/CreateThing/Characteristics";
 
 function CreateThingModal() {
   const [files, setFiles] = useState([]);
