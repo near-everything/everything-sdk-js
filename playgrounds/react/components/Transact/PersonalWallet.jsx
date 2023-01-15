@@ -1,7 +1,12 @@
 import { useUser } from "@auth0/nextjs-auth0/client";
-import { getThingsByOwner } from "@everything-sdk-js/data";
+import {
+  fetchEverything,
+  getThingsByOwner,
+  minterQuery
+} from "@everything-sdk-js/data";
+import { connect } from "@mintbase-js/auth";
 import { useWallet } from "@mintbase-js/react";
-import { depositStorage, execute } from "@mintbase-js/sdk";
+import { addMinter, depositStorage, execute, InMemoryKeyStore, KeyPair } from "@mintbase-js/sdk";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import AuthBar from "../AuthBar";
@@ -10,9 +15,26 @@ import ListThingModal from "../ListThingModal";
 import ThingCard from "./ThingCard";
 
 function PersonalWallet() {
-  const { selector } = useWallet();
+  const { selector, activeAccountId } = useWallet();
   const [listing, setListing] = useState({});
   const { user } = useUser();
+  const { data: isMinter } = useQuery(
+    ["minter", activeAccountId],
+    async () => {
+      const { data, error } = await fetchEverything({
+        query: minterQuery,
+        variables: { minterId: activeAccountId },
+      });
+      if (!error) {
+        return data.minter;
+      } else {
+        console.log(error);
+      }
+    },
+    {
+      enabled: !!activeAccountId,
+    }
+  );
   const { data, isLoading } = useQuery(
     ["thingsByOwner", user?.sub],
     async () => {
@@ -38,16 +60,22 @@ function PersonalWallet() {
     );
   };
 
-  // const handleAddMinter = async () => {
-  //   const wallet = await selector.wallet();
-  //   await execute(
-  //     { wallet },
-  //     addMinter({
-  //       nftContractId: "everything.mintspace2.testnet",
-  //       minterId: "efiz.testnet",
-  //     })
-  //   );
-  // };
+  const handleAddMinter = async () => {
+    const keyStore = new InMemoryKeyStore();
+    keyStore.setKey(
+      process.env.NEAR_NETWORK,
+      "everything.testnet",
+      KeyPair.fromString(process.env.NEAR_PRIVATE_KEY)
+    );
+    const approverAccount = await connect("everything.testnet", keyStore);
+    await execute(
+      { account: approverAccount },
+      addMinter({
+        nftContractId: "everything.mintspace2.testnet",
+        minterId: activeAccountId,
+      })
+    );
+  };
 
   return (
     <div className="flex flex-col">
@@ -62,6 +90,11 @@ function PersonalWallet() {
         <button className="btn" onClick={handleDepositStorage}>
           deposit storage
         </button>
+        {!isMinter ? (
+          <button className="btn" onClick={handleAddMinter}>
+            complete kyc
+          </button>
+        ) : null}
       </div>
 
       {isLoading ? (
