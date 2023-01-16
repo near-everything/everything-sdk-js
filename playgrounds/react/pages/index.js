@@ -1,14 +1,15 @@
-import { useUser } from "@auth0/nextjs-auth0/client";
+import { LoginButton } from "@inrupt/solid-ui-react";
+import { useWallet } from "@mintbase-js/react";
 import "@near-wallet-selector/modal-ui/styles.css";
 import Head from "next/head";
 import Link from "next/link";
-import { useWallet } from "@mintbase-js/react";
+import { useRouter } from "next/router";
 import Layout from "../components/Layout";
 
 export default function Home() {
   const { connect, disconnect, activeAccountId, isWalletSelectorSetup } =
     useWallet();
-  const { user, isLoading } = useUser();
+  const router = useRouter();
 
   return (
     <>
@@ -27,31 +28,13 @@ export default function Home() {
             <div className="flex grid-cols-2 gap-4 w-full">
               <div className="flex flex-1 flex-col text-center">
                 <p className="text-xl">everything</p>
-                <div>
-                  {isLoading ? null : (
-                    <>
-                      {user ? (
-                        <>
-                          <p className="mb-2">
-                            you are logged in as {user.nickname}
-                          </p>
-                          <Link href="/api/auth/logout">
-                            <button className="btn normal-case">
-                              disconnect
-                            </button>
-                          </Link>
-                        </>
-                      ) : (
-                        <>
-                          <p className="mb-2">you are not logged in</p>
-                          <Link href="/api/auth/login">
-                            <button className="btn normal-case">connect</button>
-                          </Link>
-                        </>
-                      )}
-                    </>
-                  )}
-                </div>
+                <LoginButton
+                  oidcIssuer="https://login.inrupt.com"
+                  redirectUrl={router.pathname}
+                  authOptions={{
+                    clientName: "everything",
+                  }}
+                />
               </div>
               <div className="flex flex-1 flex-col text-center">
                 <p className="text-xl">NEAR</p>

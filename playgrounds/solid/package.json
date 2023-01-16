@@ -18,6 +18,9 @@
     "vite": "^3.1.8"
   },
   "dependencies": {
+    "@inrupt/solid-client": "^1.24.0",
+    "@inrupt/solid-client-authn-browser": "^1.12.4",
+    "@inrupt/solid-ui-react": "^2.8.2",
     "@solidjs/meta": "^0.28.0",
     "@solidjs/router": "^0.6.0",
     "solid-js": "^1.6.2",

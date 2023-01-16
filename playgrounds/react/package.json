@@ -13,6 +13,8 @@
     "@everything-sdk-js/data": "*",
     "@everything-sdk-js/react": "*",
     "@everything-sdk-js/sdk": "*",
+    "@inrupt/solid-client": "^1.24.0",
+    "@inrupt/solid-ui-react": "^2.8.2",
     "@mintbase-js/data": "^0.1.0-alpha-10",
     "@mintbase-js/react": "^0.1.0-alpha-10",
     "@mintbase-js/sdk": "^0.1.0-alpha-9",

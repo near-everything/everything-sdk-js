@@ -1,9 +1,7 @@
 import { UserProvider } from "@auth0/nextjs-auth0/client";
 import { EverythingProvider } from "@everything-sdk-js/react";
-import {
-  QueryClient,
-  QueryClientProvider
-} from "@tanstack/react-query";
+import { SessionProvider } from "@inrupt/solid-ui-react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
 import "swiper/css";
 import "swiper/css/effect-cards";
@@ -18,15 +16,17 @@ function App({ Component, pageProps }) {
 
   return (
     <>
-      <UserProvider>
-        <WalletContextProvider>
-          <EverythingProvider>
-            <QueryClientProvider client={queryClient}>
-              {getLayout(<Component {...pageProps} />)}
-            </QueryClientProvider>
-          </EverythingProvider>
-        </WalletContextProvider>
-      </UserProvider>
+      <SessionProvider>
+        <UserProvider>
+          <WalletContextProvider>
+            <EverythingProvider>
+              <QueryClientProvider client={queryClient}>
+                {getLayout(<Component {...pageProps} />)}
+              </QueryClientProvider>
+            </EverythingProvider>
+          </WalletContextProvider>
+        </UserProvider>
+      </SessionProvider>
     </>
   );
 }

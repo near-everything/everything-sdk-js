@@ -1,4 +1,6 @@
+import { LoginButton } from "@inrupt/solid-ui-react";
 import { Show } from "solid-js";
+import { useLocation } from "solid-start";
 import { useParams, useRouteData } from "solid-start";
 import { FormError } from "solid-start/data";
 import {
@@ -33,6 +35,7 @@ export function routeData() {
 export default function Login() {
   const data = useRouteData<typeof routeData>();
   const params = useParams();
+  const location = useLocation();
 
   const [loggingIn, { Form }] = createServerAction$(async (form: FormData) => {
     const loginType = form.get("loginType");
@@ -131,6 +134,15 @@ export default function Login() {
         </Show>
         <button type="submit">{data() ? "Login" : ""}</button>
       </Form>
+      <div>
+        <LoginButton
+          oidcIssuer="https://login.inrupt.com"
+          redirectUrl={location.pathname}
+          authOptions={{
+            clientName: "everything",
+          }}
+        />
+      </div>
     </main>
   );
 }
